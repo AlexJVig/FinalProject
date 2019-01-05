@@ -1,7 +1,10 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinalProjectServer", "FinalProjectServer\FinalProjectServer.csproj", "{BDDDA054-3700-41EB-BA33-1F9DF5366A03}"
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2046
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinalProjectServer", "FinalProjectServer\FinalProjectServer.csproj", "{BDDDA054-3700-41EB-BA33-1F9DF5366A03}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneticConsole", "GeneticConsole\GeneticConsole.csproj", "{727CF763-3E84-45E6-AC8D-C0E965FDE0B3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,5 +16,15 @@ Global
 		{BDDDA054-3700-41EB-BA33-1F9DF5366A03}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BDDDA054-3700-41EB-BA33-1F9DF5366A03}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BDDDA054-3700-41EB-BA33-1F9DF5366A03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{727CF763-3E84-45E6-AC8D-C0E965FDE0B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{727CF763-3E84-45E6-AC8D-C0E965FDE0B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{727CF763-3E84-45E6-AC8D-C0E965FDE0B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{727CF763-3E84-45E6-AC8D-C0E965FDE0B3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {774FDE16-AFE1-432F-995F-0ACE5AFF4015}
 	EndGlobalSection
 EndGlobal
