@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using FinalProjectServer.Models;
 
@@ -10,6 +6,12 @@ namespace FinalProjectServer.Controllers
 {
     public class HomeController : Controller
     {
+        [HttpPost]
+        public IActionResult StartMutating([FromBody]IoData data)
+        {
+            return null;
+        }
+
         public IActionResult Index()
         {
             return View();
