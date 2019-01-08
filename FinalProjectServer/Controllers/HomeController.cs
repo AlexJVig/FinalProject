@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using FinalProjectServer.Models;
+using FinalProjectServer.Models.GA;
 
 namespace FinalProjectServer.Controllers
 {
@@ -9,7 +10,9 @@ namespace FinalProjectServer.Controllers
         [HttpPost]
         public IActionResult StartMutating([FromBody]IoData data)
         {
-            return null;
+            var result = GaService.StartGa(data);
+
+            return Json(result);
         }
 
         public IActionResult Index()

@@ -7,6 +7,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
+    <PackageReference Include="GeneticSharp.Extensions" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,5 +19,8 @@
     <None Include="wwwroot\images\ChooseFile.svg" />
     <None Include="wwwroot\images\ChooseFile44.svg" />
     <None Include="wwwroot\images\EnterData.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\GA\" />
   </ItemGroup>
 </Project>

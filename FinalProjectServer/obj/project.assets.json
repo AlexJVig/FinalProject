@@ -2,6 +2,43 @@
   "version": 3,
   "targets": {
     ".NETCoreApp,Version=v2.1": {
+      "Antlr3.Runtime/3.5.1": {
+        "type": "package",
+        "dependencies": {
+          "NETStandard.Library": "1.6.0"
+        },
+        "compile": {
+          "lib/netstandard1.1/Antlr3.Runtime.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.1/Antlr3.Runtime.dll": {}
+        }
+      },
+      "GeneticSharp/2.2.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/GeneticSharp.Domain.dll": {},
+          "lib/netstandard2.0/GeneticSharp.Infrastructure.Framework.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/GeneticSharp.Domain.dll": {},
+          "lib/netstandard2.0/GeneticSharp.Infrastructure.Framework.dll": {}
+        }
+      },
+      "GeneticSharp.Extensions/2.2.0": {
+        "type": "package",
+        "dependencies": {
+          "GeneticSharp": "2.2.0",
+          "NCalc.NetCore": "1.0.1",
+          "System.Drawing.Common": "4.5.0-preview1-26216-02"
+        },
+        "compile": {
+          "lib/netstandard2.0/GeneticSharp.Extensions.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/GeneticSharp.Extensions.dll": {}
+        }
+      },
       "Microsoft.AspNet.WebApi.Client/5.2.6": {
         "type": "package",
         "dependencies": {
@@ -2601,6 +2638,18 @@
           }
         }
       },
+      "NCalc.NetCore/1.0.1": {
+        "type": "package",
+        "dependencies": {
+          "Antlr3.Runtime": "3.5.1"
+        },
+        "compile": {
+          "lib/netstandard2.0/NCalc.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/NCalc.dll": {}
+        }
+      },
       "NETStandard.Library/2.0.3": {
         "type": "package",
         "dependencies": {
@@ -3104,6 +3153,28 @@
         },
         "compile": {
           "ref/netstandard1.5/System.Diagnostics.Tracing.dll": {}
+        }
+      },
+      "System.Drawing.Common/4.5.0-preview1-26216-02": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.NETCore.Platforms": "2.0.0"
+        },
+        "compile": {
+          "ref/netstandard2.0/System.Drawing.Common.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.Drawing.Common.dll": {}
+        },
+        "runtimeTargets": {
+          "runtimes/unix/lib/netcoreapp2.0/System.Drawing.Common.dll": {
+            "assetType": "runtime",
+            "rid": "unix"
+          },
+          "runtimes/win/lib/netcoreapp2.0/System.Drawing.Common.dll": {
+            "assetType": "runtime",
+            "rid": "win"
+          }
         }
       },
       "System.Dynamic.Runtime/4.3.0": {
@@ -4337,6 +4408,50 @@
     }
   },
   "libraries": {
+    "Antlr3.Runtime/3.5.1": {
+      "sha512": "NUWAZRcC8WQgYKp07b2HA0zdOrFG2bzcHEQ/tihcpROFZT6VdWtmGxH+Z+WQxOUWCzMcGY1bgV6qx9bO47DChg==",
+      "type": "package",
+      "path": "antlr3.runtime/3.5.1",
+      "files": [
+        ".signature.p7s",
+        "antlr3.runtime.3.5.1.nupkg.sha512",
+        "antlr3.runtime.nuspec",
+        "lib/net20/Antlr3.Runtime.dll",
+        "lib/net20/Antlr3.Runtime.xml",
+        "lib/net40-client/Antlr3.Runtime.dll",
+        "lib/net40-client/Antlr3.Runtime.xml",
+        "lib/netstandard1.1/Antlr3.Runtime.dll",
+        "lib/netstandard1.1/Antlr3.Runtime.xml",
+        "lib/portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1/Antlr3.Runtime.dll",
+        "lib/portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1/Antlr3.Runtime.xml"
+      ]
+    },
+    "GeneticSharp/2.2.0": {
+      "sha512": "5BXMfISoi6qxpZglrK8Ut6qATH9K6yudkedrqMfI9pCHaDFgELyZJ9qPoToPQb06lSl5opk15wY1SEoa8VgJZg==",
+      "type": "package",
+      "path": "geneticsharp/2.2.0",
+      "files": [
+        ".signature.p7s",
+        "geneticsharp.2.2.0.nupkg.sha512",
+        "geneticsharp.nuspec",
+        "lib/net462/GeneticSharp.Domain.dll",
+        "lib/net462/GeneticSharp.Infrastructure.Framework.dll",
+        "lib/netstandard2.0/GeneticSharp.Domain.dll",
+        "lib/netstandard2.0/GeneticSharp.Infrastructure.Framework.dll"
+      ]
+    },
+    "GeneticSharp.Extensions/2.2.0": {
+      "sha512": "WC1W5zXhOFmGu39EaBuEZqYW9PnG91Q0mfBf7ulTvpifcJ23U+AzU4UvEbq9LRtC0Punhv8eJii58GAL5jxemg==",
+      "type": "package",
+      "path": "geneticsharp.extensions/2.2.0",
+      "files": [
+        ".signature.p7s",
+        "geneticsharp.extensions.2.2.0.nupkg.sha512",
+        "geneticsharp.extensions.nuspec",
+        "lib/net462/GeneticSharp.Extensions.dll",
+        "lib/netstandard2.0/GeneticSharp.Extensions.dll"
+      ]
+    },
     "Microsoft.AspNet.WebApi.Client/5.2.6": {
       "sha512": "rMDlyePoxggkmN/qgha1+BR2Uy+dOr38xKCQOPfVNKGY07R2nYJGMTKJFE1XFgwD70RYUNazf2fqutjJF18XgQ==",
       "type": "package",
@@ -6767,6 +6882,17 @@
         "version.txt"
       ]
     },
+    "NCalc.NetCore/1.0.1": {
+      "sha512": "XCu9F4ghZ8UuFXx8ER7eQmtKN9HPfvxMqpWA4woCVwy1ehJVi0gIHz4AX3GcsNkdNEumZlkjo1lO8SHCg3ADCA==",
+      "type": "package",
+      "path": "ncalc.netcore/1.0.1",
+      "files": [
+        ".signature.p7s",
+        "lib/netstandard2.0/NCalc.dll",
+        "ncalc.netcore.1.0.1.nupkg.sha512",
+        "ncalc.netcore.nuspec"
+      ]
+    },
     "NETStandard.Library/2.0.3": {
       "sha512": "st47PosZSHrjECdjeIzZQbzivYBJFv6P2nv4cj2ypdI204DO+vZ7l5raGMiX4eXMJ53RfOIg+/s4DHVZ54Nu2A==",
       "type": "package",
@@ -8074,6 +8200,38 @@
         "ref/xamarinwatchos10/_._",
         "system.diagnostics.tracing.4.3.0.nupkg.sha512",
         "system.diagnostics.tracing.nuspec"
+      ]
+    },
+    "System.Drawing.Common/4.5.0-preview1-26216-02": {
+      "sha512": "/6y+iWXv+GzYknc+Ynqb7uJJ5V9FPUn6d2phqHiwEc61FA7a3T1r21v+xYyPY9yGzAIqft0pv3/kr5TCTPOdmA==",
+      "type": "package",
+      "path": "system.drawing.common/4.5.0-preview1-26216-02",
+      "files": [
+        ".signature.p7s",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net461/System.Drawing.Common.dll",
+        "lib/netstandard2.0/System.Drawing.Common.dll",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "lib/xamarintvos10/_._",
+        "lib/xamarinwatchos10/_._",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/net461/System.Drawing.Common.dll",
+        "ref/netstandard2.0/System.Drawing.Common.dll",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "ref/xamarintvos10/_._",
+        "ref/xamarinwatchos10/_._",
+        "runtimes/unix/lib/netcoreapp2.0/System.Drawing.Common.dll",
+        "runtimes/win/lib/netcoreapp2.0/System.Drawing.Common.dll",
+        "system.drawing.common.4.5.0-preview1-26216-02.nupkg.sha512",
+        "system.drawing.common.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
       ]
     },
     "System.Dynamic.Runtime/4.3.0": {
@@ -11495,6 +11653,7 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.1": [
+      "GeneticSharp.Extensions >= 2.2.0",
       "Microsoft.AspNetCore.App >= 2.1.1",
       "Microsoft.AspNetCore.Razor.Design >= 2.1.2",
       "Microsoft.NETCore.App >= 2.1.0"
@@ -11539,6 +11698,10 @@
     "frameworks": {
       "netcoreapp2.1": {
         "dependencies": {
+          "GeneticSharp.Extensions": {
+            "target": "Package",
+            "version": "[2.2.0, )"
+          },
           "Microsoft.AspNetCore.App": {
             "suppressParent": "All",
             "target": "Package",
