@@ -4,7 +4,7 @@ namespace FinalProjectServer.Models
 {
     public class IoData
     {
-        public ICollection<IoPair> Data
+        public IList<IoPair> Data
         {
             get;
             set;

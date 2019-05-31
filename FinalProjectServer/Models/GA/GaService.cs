@@ -58,7 +58,7 @@ namespace FinalProjectServer.Models.GA
                 inputsList.Add(new InputFunction(entry));
             }
 
-            int funcLength = 7;
+            int funcLength = data.Data[0].Input.Count;
 
 
         // Custom data input
@@ -128,7 +128,16 @@ namespace FinalProjectServer.Models.GA
 
 ga.Start();
 
-            return bestChromosome.BuildFunction();
+            return GenerateCSharpFunction(bestChromosome.BuildFunction());
+        }
+
+        private static string GenerateCSharpFunction(string mathRepresentation)
+        {
+            var functions = mathRepresentation.Split(' ');
+
+            Array.Resize(ref functions, functions.Length - 1); // Remove last element.
+
+            return "";
         }
     }
 }
