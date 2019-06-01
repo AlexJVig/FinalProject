@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using GeneticSharp.Domain;
 using GeneticSharp.Domain.Chromosomes;
 using GeneticSharp.Domain.Crossovers;
@@ -133,11 +134,60 @@ ga.Start();
 
         private static string GenerateCSharpFunction(string mathRepresentation)
         {
-            var functions = mathRepresentation.Split(' ');
+            if (mathRepresentation.Contains(' '))
+            {
+                var functions = mathRepresentation.Split(' ');
+                StringBuilder resultingFunction = new StringBuilder();
 
-            Array.Resize(ref functions, functions.Length - 1); // Remove last element.
+                Array.Resize(ref functions, functions.Length - 1); // Remove last element.
 
-            return "";
+                foreach (var function in functions)
+                {
+                    resultingFunction.Append(GenerateCSharpFunction(function));
+                }
+
+                return $@"private int resultFunction()
+                          {{
+return {resultingFunction.ToString()};
+                          }}";
+            }
+
+            StringBuilder remainingString = new StringBuilder(mathRepresentation);
+            StringBuilder cSharpFunction = new StringBuilder();
+
+            // Check if contains negative coefficient.
+            if (mathRepresentation.Contains('-'))
+            {
+                cSharpFunction.Append("- ");
+                remainingString.Remove(0, 1);
+            }
+            else if (mathRepresentation.Contains('+'))
+            {
+                remainingString.Remove(0, 1);
+            }
+
+            // Check if polynomial.
+            if (mathRepresentation.Contains('^'))
+            {
+                var polynomial = remainingString.ToString().Split('^');
+            }
+
+            // Get coefficient number.
+            var coefficient = remainingString.Remove(0, remainingString.Length - 1);
+
+            cSharpFunction.Append(coefficient);
+
+            return cSharpFunction.ToString();
+        }
+
+        private static int GenerateLinear(string mathRepresentation)
+        {
+            return - foo(mathRepresentation);
+        }
+
+        private static int foo(string mathRepresentation)
+        {
+            return 1;
         }
     }
 }
