@@ -12,12 +12,13 @@ namespace FinalProjectServer.Controllers
     {
         public IActionResult Index()
         {
+            
             return View();
         }
 
         public IActionResult About()
         {
-            ViewData["Message"] = "Your application description page.";
+            ViewData["Message"] = "Functastic - Let us do your math!";
 
             return View();
         }

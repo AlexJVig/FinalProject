@@ -11,6 +11,14 @@ for details on configuring this project to bundle and minify static web assets. 
     src: url("LULRO.TTF");
 }
 
+.content{
+    margin: auto;
+}
+
+.show-hide {
+    display: none !important;
+}
+
 h1 {
     font-family: 'Calling';
     font-size: 80px;
@@ -20,6 +28,14 @@ h1 {
 h2{
     font-family: Lulro;
     text-align: center;
+}
+
+h3 {
+    font-family: Lulro !important;
+}
+
+#text {
+    font-family: Lulro;
 }
 
 body {
@@ -65,7 +81,7 @@ body {
 
 .box{
     margin-right: 0px;
-    margin-left: 570px;
+    margin-left: 470px;
     margin-top: 180px;
     width: 60%;
     border: 3px solid ;
