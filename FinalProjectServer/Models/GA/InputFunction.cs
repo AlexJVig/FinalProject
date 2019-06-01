@@ -1,19 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace FinalProjectServer.Models.GA
 {
-    public class InputFunction
+    public class InputFunction : GeneticConsole.InputFunction
     {
-        public int[] Parameters { get; set; }
-        public int Result { get; set; }
-        public int Length { get { return Parameters.Length; } }
-
-        public InputFunction(int result, params int[] parameters)
+        public InputFunction(int result, params int[] parameters) : base(result, parameters)
         {
-            Parameters = parameters;
-            Result = result;
         }
 
         public InputFunction(IoPair pair)

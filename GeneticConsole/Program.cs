@@ -4,11 +4,13 @@ using GeneticSharp.Domain.Crossovers;
 using GeneticSharp.Domain.Fitnesses;
 using GeneticSharp.Domain.Mutations;
 using GeneticSharp.Domain.Populations;
+using GeneticSharp.Domain.Randomizations;
 using GeneticSharp.Domain.Selections;
 using GeneticSharp.Domain.Terminations;
 using GeneticSharp.Extensions.Mathematic;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace GeneticConsole
 {
@@ -16,6 +18,13 @@ namespace GeneticConsole
     {
         static void Main(string[] args)
         {
+
+            while (true)
+            {
+                ExpressionChromosome c = new ExpressionChromosome(5);
+                Console.WriteLine(c.ToString());
+                Thread.Sleep(1000);
+            }
             // Sample data for 5A-7B
 
             //List<InputFunction> data = new List<InputFunction>()
