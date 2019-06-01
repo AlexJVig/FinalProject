@@ -21,6 +21,6 @@
     <None Include="wwwroot\images\EnterData.svg" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\GA\" />
+    <ProjectReference Include="..\GeneticConsole\GeneticConsole.csproj" />
   </ItemGroup>
 </Project>

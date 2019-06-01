@@ -15,7 +15,12 @@ namespace GeneticConsole
         {
             this.minValue = minValue;
             this.maxValue = maxValue;
-            CreateGenes();
+            InitializeGenes();
+        }
+
+        private void InitializeGenes()
+        {
+
         }
 
         public override IChromosome CreateNew()
@@ -25,19 +30,20 @@ namespace GeneticConsole
 
         public override Gene GenerateGene(int geneIndex)
         {
-            int value = RandomizationProvider.Current.GetInt(minValue, maxValue);
-            return new Gene(value);
+            ExpressionGene expression = new ExpressionGene();
+            //int value = RandomizationProvider.Current.GetInt(minValue, maxValue);
+            return new Gene(expression);
         }
 
-        public int Calculate(params int[] parameters)
+        public float Calculate(params double[] parameters)
         {
             if (parameters.Length != Length)
                 throw new ArgumentException("Invalid parameters count for function");
 
-            int result = 0;
+            float result = 0;
 
             for (int i = 0; i < Length; i++)
-                result += (int)GetGene(i).Value * parameters[i];
+                result += (int)((int)GetGene(i).Value * parameters[i]);
 
             return result;
         }
