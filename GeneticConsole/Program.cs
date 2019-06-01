@@ -84,7 +84,7 @@ namespace GeneticConsole
             //}
 
             IChromosome chromosome = new ExpressionChromosome(funcLength);
-            IPopulation population = new Population(200, 200, chromosome);
+            IPopulation population = new Population(10000, 20000, chromosome);
             population.GenerationStrategy = new PerformanceGenerationStrategy();
             IFitness fitness = new ExpressionFitness(data.ToArray());
             ISelection selection = new EliteSelection();

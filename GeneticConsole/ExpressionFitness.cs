@@ -27,11 +27,9 @@ namespace GeneticConsole
             foreach (InputFunction func in data)
             {
                 double result = ch.Evaluate(func.Parameters);
-                //fitness += func.Result - Math.Abs(func.Result - result);
                 fitness += Math.Abs(result - func.Result);
             }
 
-            //return fitness;
             return fitness * -1;
         }
     }
