@@ -5,6 +5,7 @@ using GeneticSharp.Infrastructure.Framework.Texts;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace GeneticConsole
 {
@@ -119,7 +120,7 @@ namespace GeneticConsole
                     case GeneType.Operator:
                         double a = stack.Pop();
                         double b = stack.Pop();
-                        stack.Push(Compute(a, b, gene.Operator));
+                        stack.Push(PrefixHelper.Compute(a, b, gene.Operator));
                         break;
 
                     default:
@@ -130,28 +131,16 @@ namespace GeneticConsole
             return stack.Pop();
         }
 
-        private double Compute(double a, double b, Operator? op)
+        public void SetGenes(Gene[] genes)
         {
-            switch (op)
-            {
-                case Operator.Add:
-                    return a + b;
+            m_genes = genes;
+        }
 
-                case Operator.Substract:
-                    return a - b;
-
-                case Operator.Multiply:
-                    return a * b;
-
-                case Operator.Divide:
-                    return a / b;
-
-                case Operator.Pow:
-                    return Math.Pow(a, b);
-
-                default:
-                    throw new ArgumentException("invalid operator");
-            }
+        public bool IsLegal()
+        {
+            int ops = m_genes.Count(x=>(x.Value as ExpressionGene).Type == GeneType.Operator); 
+            int nums = m_genes.Count(x=>(x.Value as ExpressionGene).Type != GeneType.Operator);
+            return nums == ops + 1;
         }
 
         /// interface members

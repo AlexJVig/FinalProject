@@ -35,7 +35,7 @@ namespace GeneticConsole
             return new Gene(expression);
         }
 
-        public float Calculate(params float[] parameters)
+        public float Calculate(params double[] parameters)
         {
             if (parameters.Length != Length)
                 throw new ArgumentException("Invalid parameters count for function");
@@ -43,7 +43,7 @@ namespace GeneticConsole
             float result = 0;
 
             for (int i = 0; i < Length; i++)
-                result += (int)GetGene(i).Value * parameters[i];
+                result += (int)((int)GetGene(i).Value * parameters[i]);
 
             return result;
         }

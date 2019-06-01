@@ -44,5 +44,51 @@ namespace GeneticConsole
                     return "Invalid Type";
             }
         }
+
+        public int CompareTo(ExpressionGene other)
+        {
+            if (other == null)
+                return -1;
+
+            if (other.Type != Type)
+                return -1;
+
+            switch (Type)
+            {
+                case GeneType.Operator:
+                    if (other.Operator != Operator) return -1;
+                    break;
+
+                case GeneType.Number:
+                    if (other.Number != Number) return -1;
+                    break;
+
+                case GeneType.Variable:
+                    if (other.Variable != Variable) return -1;
+                    break;
+            }
+
+            return 0;
+        }
+
+        public static bool operator ==(ExpressionGene first, ExpressionGene second)
+        {
+            if (Object.ReferenceEquals(first, second))
+            {
+                return true;
+            }
+
+            if (((object)first == null) || ((object)second == null))
+            {
+                return false;
+            }
+
+            return first.CompareTo(second) == 0;
+        }
+
+        public static bool operator !=(ExpressionGene first, ExpressionGene second)
+        {
+            return !(first == second);
+        }
     }
 }
