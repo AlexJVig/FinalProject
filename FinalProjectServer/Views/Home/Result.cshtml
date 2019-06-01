@@ -3,6 +3,14 @@
 }
 <head>
     <link rel="stylesheet" href="~/css/colorfullFont.scss">
+    <script>
+        $(document).ready(function() {
+            var pageUrl = window.location.search.split('=');
+
+            console.log(pageUrl[1]);
+            $('#resultSection').text(decodeURIComponent(pageUrl[1]));
+        });
+    </script>
 </head>
 <div>
     <h1>Thank You!</h1>
@@ -16,7 +24,7 @@
     <span></span>
     <div class="content">
 
-        <p>function(x,y){ return x + y; }</p>
+        <p id="resultSection"></p>
     </div>
 
 </div>

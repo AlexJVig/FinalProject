@@ -4,43 +4,8 @@
 
 <script>
     $(document).ready(function() {
-    console.log('aaa');
         //get button by ID
         $('#submitTextButton').on('click', function() {
-            var data = {
-    Data: [{
-        Input: [4,5,-5,3,8,6,15],
-        Output: [152]
-    }, {
-        Input: [1,1,0,7,-25,-7,24],
-        Output: [221]
-    }, {
-        Input: [-4,-4,3,2,-1,55,-36],
-        Output: [-269]
-    }, {
-        Input: [-2,3,-7,-3,0,-12,45],
-        Output: [384]
-    }]
-};
-    var textData = `{
-    "Data": [{
-        "Input": [4,5,-5,3,8,6,15],
-        "Output": [152]
-    }, {
-        "Input": [1,1,0,7,-25,-7,24],
-        "Output": [221]
-    }, {
-        "Input": [-4,-4,3,2,-1,55,-36],
-        "Output": [-269]
-    }, {
-        "Input": [-2,3,-7,-3,0,-12,45],
-        "Output": [384]
-    }]
-}`;
-            //console.log(data);
-            //console.log(JSON.stringify(data));
-            //console.log(textData);
-            //console.log($('#freeInput').val());
             //call a function with parameters
             $.ajax({
                 headers: {
@@ -53,8 +18,9 @@
                 datatype: 'json',
                 data: $('#freeInput').val(),
                 success: function(data, textStatus, jqXHR) {
-                    console.log(data);
-                    $('#gaResult').text(data);
+
+                    generatedFunction = data;
+                    window.location.replace(window.location.href + "Home/Result?func=" + data);
                 }
             });
         });
