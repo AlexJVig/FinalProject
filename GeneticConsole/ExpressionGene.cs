@@ -11,7 +11,7 @@ namespace GeneticConsole
     {
         public GeneType Type { get; set; }
         public Operator? Operator { get; set; }
-        public float Number { get; set; }
+        public double Number { get; set; }
         public int Variable { get; set; }
 
         public ExpressionGene()
@@ -19,7 +19,7 @@ namespace GeneticConsole
 
         }
 
-        public ExpressionGene(GeneType type, Operator? op = null, float number = 0, int variable = 0)
+        public ExpressionGene(GeneType type, Operator? op = null, double number = 0, int variable = 0)
         {
             Type = type;
             Operator = op;

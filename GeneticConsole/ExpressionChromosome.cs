@@ -99,6 +99,63 @@ namespace GeneticConsole
             return builder.ToString();
         }
 
+        public double Evaluate(params double[] variables)
+        {
+            Stack<double> stack = new Stack<double>();
+            for (int i = Length - 1; i >= 0; i--)
+            {
+                ExpressionGene gene = m_genes[i].Value as ExpressionGene;
+
+                switch (gene.Type)
+                {
+                    case GeneType.Number:
+                        stack.Push(gene.Number);
+                        break;
+
+                    case GeneType.Variable:
+                        stack.Push(variables[gene.Variable]);
+                        break;
+
+                    case GeneType.Operator:
+                        double a = stack.Pop();
+                        double b = stack.Pop();
+                        stack.Push(Compute(a, b, gene.Operator));
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+            return stack.Pop();
+        }
+
+        private double Compute(double a, double b, Operator? op)
+        {
+            switch (op)
+            {
+                case Operator.Add:
+                    return a + b;
+
+                case Operator.Substract:
+                    return a - b;
+
+                case Operator.Multiply:
+                    return a * b;
+
+                case Operator.Divide:
+                    return a / b;
+
+                case Operator.Pow:
+                    return Math.Pow(a, b);
+
+                default:
+                    throw new ArgumentException("invalid operator");
+            }
+        }
+
+        /// interface members
+
         /// <summary>
         /// Generates the gene for the specified index.
         /// </summary>

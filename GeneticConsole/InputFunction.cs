@@ -6,15 +6,15 @@ namespace GeneticConsole
 {
     public class InputFunction
     {
-        public float[] Parameters { get; set; }
-        public float Result { get; set; }
+        public double[] Parameters { get; set; }
+        public double Result { get; set; }
         public int Length { get { return Parameters.Length; } }
 
         protected InputFunction()
         {
         }
 
-        public InputFunction(float result, params float[] parameters)
+        public InputFunction(double result, params double[] parameters)
         {
             Parameters = parameters;
             Result = result;

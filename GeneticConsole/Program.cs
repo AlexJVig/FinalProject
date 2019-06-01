@@ -21,8 +21,9 @@ namespace GeneticConsole
 
             while (true)
             {
-                ExpressionChromosome c = new ExpressionChromosome(5);
+                ExpressionChromosome c = new ExpressionChromosome(2);
                 Console.WriteLine(c.ToString());
+                Console.WriteLine(c.Evaluate(1, 2));
                 Thread.Sleep(1000);
             }
             // Sample data for 5A-7B
