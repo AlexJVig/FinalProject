@@ -138,15 +138,19 @@ ga.Start();
             {
                 var functions = mathRepresentation.Split(' ');
                 StringBuilder resultingFunction = new StringBuilder();
+                StringBuilder signature = new StringBuilder();
 
                 Array.Resize(ref functions, functions.Length - 1); // Remove last element.
 
                 foreach (var function in functions)
                 {
+                    signature.Append($"int {function.Substring(function.Length - 1)}, ");
                     resultingFunction.Append(GenerateCSharpFunction(function));
                 }
 
-                return $@"private int resultFunction()
+                resultingFunction = resultingFunction[0] == '+' ? resultingFunction.Remove(0, 2) : resultingFunction;
+
+                return $@"private int resultFunction({signature.Remove(signature.Length - 2, 2).ToString()})
                           {{
 return {resultingFunction.ToString()};
                           }}";
@@ -163,7 +167,12 @@ return {resultingFunction.ToString()};
             }
             else if (mathRepresentation.Contains('+'))
             {
+                cSharpFunction.Append("+ ");
                 remainingString.Remove(0, 1);
+            }
+            else
+            {
+                cSharpFunction.Append("+ ");
             }
 
             // Check if polynomial.
@@ -173,9 +182,11 @@ return {resultingFunction.ToString()};
             }
 
             // Get coefficient number.
-            var coefficient = remainingString.Remove(0, remainingString.Length - 1);
+            var variable = remainingString.ToString().Substring(remainingString.Length - 1, 1);
+            var coefficient = remainingString.Remove(remainingString.Length - 1, 1).ToString();
 
             cSharpFunction.Append(coefficient);
+            cSharpFunction.Append($" * {variable}");
 
             return cSharpFunction.ToString();
         }
