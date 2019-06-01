@@ -5,6 +5,8 @@ namespace FinalProjectServer.Models
 {
     public class IoData
     {
+        public IoData() { }
+
         public IoData(string data)
         {
             var rows = data.Split('\n', System.StringSplitOptions.RemoveEmptyEntries);
