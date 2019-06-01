@@ -2,3 +2,9 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
+
+$('.txt').html(function(i, html) {
+    var chars = $.trim(html).split("");
+  
+    return '<span>' + chars.join('</span><span>') + '</span>';
+  });

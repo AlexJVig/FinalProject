@@ -3,11 +3,12 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>@ViewData["Title"] - FinalProjectServer</title>
+        <title>@ViewData["Title"] - Functastic</title>
 
         <environment include="Development">
             <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
             <link rel="stylesheet" href="~/css/site.css" />
+            <link rel="stylesheet" href="~/css/colorfullFont.css" />
         </environment>
         <environment exclude="Development">
             <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -26,13 +27,14 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">FinalProjectServer</a>
+                    <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Functastic</a>
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                         <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                         <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Result">Result</a></li>
                     </ul>
                 </div>
             </div>
@@ -44,7 +46,7 @@
             @RenderBody()
             <hr />
             <footer>
-                <p>&copy; 2018 - FinalProjectServer</p>
+                <p>&copy; 2018 - Functastic</p>
             </footer>
         </div>
 

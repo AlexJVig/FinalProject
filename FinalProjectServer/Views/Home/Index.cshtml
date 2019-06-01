@@ -2,7 +2,7 @@
     ViewData["Title"] = "Functastic";
 }
 
-<div margin: auto;>
+<div>
     <h1>Functastic</h1>
 </div>
 
@@ -20,9 +20,10 @@
                 <p>
                     <input class="form-control" type="file" accept=".txt, .json">
                     
-                    <a class="btn btn-default" href="">
+                    <a class="btn btn-default" href="Result.cshtml">
                         Run
                     </a>
+                    <a class="btn btn-default" asp-area="" asp-controller="Home" asp-action="Result">Run</a>
                 </p>
             </div>
         </div>
@@ -30,8 +31,8 @@
             <img src="~/images/EnterData.svg" alt="Visual Studio" class="img-responsive" />
             <div class="carousel-caption" role="option">
                 <p>
-                    <textarea style="font-color='black';" class="form-control">Here.</textarea>
-                    <a class="btn btn-default" href="">
+                    <textarea class="form-control">Here.</textarea>
+                    <a class="btn btn-default" href="Result.cshtml">
                         Run
                     </a>
                 </p>
