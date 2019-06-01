@@ -7,22 +7,22 @@ namespace FinalProjectServer.Models.GA
 {
     public class InputFunction : GeneticConsole.InputFunction
     {
-        public InputFunction(int result, params int[] parameters) : base(result, parameters)
+        public InputFunction(double result, params double[] parameters) : base(result, parameters)
         {
         }
 
         public InputFunction(IoPair pair)
         {
             Parameters = GetInputArray(pair);
-            Result = (int)pair.Output.FirstOrDefault();
+            Result = pair.Output.FirstOrDefault();
         }
 
-        private int[] GetInputArray(IoPair pair)
+        private double[] GetInputArray(IoPair pair)
         {
-            var resultList = new List<int>();
+            var resultList = new List<double>();
 
             foreach (var number in pair.Input)
-                resultList.Add((int)number);
+                resultList.Add(number);
 
             return resultList.ToArray();
         }
