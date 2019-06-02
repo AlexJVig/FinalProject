@@ -32,13 +32,13 @@ namespace GeneticConsole
             switch (Type)
             {
                 case GeneType.Operator:
-                    return $"[Operator: {Enum.GetName(typeof(Operator), Operator)}]";
+                    return GetOperatorSymbol().ToString();
 
                 case GeneType.Number:
-                    return $"[Number: {Number}]";
+                    return Number.ToString();
 
                 case GeneType.Variable:
-                    return $"[Variable: {Variable}]";
+                    return $"X{Variable}";
 
                 default:
                     return "Invalid Type";
@@ -89,6 +89,47 @@ namespace GeneticConsole
         public static bool operator !=(ExpressionGene first, ExpressionGene second)
         {
             return !(first == second);
+        }
+
+        public override bool Equals(object obj)
+        {
+            var other = obj as ExpressionGene;
+
+            if (other == null)
+            {
+                return false;
+            }
+
+            return CompareTo(other) == 0;
+        }
+
+        public override int GetHashCode()
+        {
+            return Type.GetHashCode() ^ Operator.GetHashCode() ^ Number.GetHashCode() ^ Variable;
+        }
+
+        private char GetOperatorSymbol()
+        {
+            switch (Operator)
+            {
+                case GeneticConsole.Operator.Add:
+                    return '+';
+
+                case GeneticConsole.Operator.Substract:
+                    return '-';
+
+                case GeneticConsole.Operator.Multiply:
+                    return '*';
+
+                case GeneticConsole.Operator.Divide:
+                    return '/';
+
+                case GeneticConsole.Operator.Pow:
+                    return '^';
+
+                default:
+                    return '?';
+            }
         }
     }
 }
