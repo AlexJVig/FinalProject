@@ -95,7 +95,7 @@ namespace GeneticConsole
             StringBuilder builder = new StringBuilder();
             for (int i = 0; i < Length; i++)
             {
-                builder.Append(m_genes[i].Value.ToString());
+                builder.Append(m_genes[i].Value + " ");
             }
             return builder.ToString();
         }
