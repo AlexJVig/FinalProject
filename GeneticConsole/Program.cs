@@ -95,7 +95,7 @@ namespace GeneticConsole
             //IMutation mutation = new TickMutation();
 
             GeneticAlgorithm ga = new GeneticAlgorithm(population, fitness, selection, crossover, mutation);
-            ga.Termination = new FitnessThresholdTermination(0);
+            ga.Termination = new ExpressionTermination(200);
             ga.MutationProbability = .5f;
 
             double latestFitness = double.MinValue;
