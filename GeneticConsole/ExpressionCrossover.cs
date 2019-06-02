@@ -10,8 +10,11 @@ namespace GeneticConsole
 {
     public class ExpressionCrossover : CrossoverBase
     {
-        public ExpressionCrossover() : base(2,2,1)
+        int maxLength;
+
+        public ExpressionCrossover(int maxLength) : base(2,2,1)
         {
+            this.maxLength = maxLength;
         }
 
         protected override IList<IChromosome> PerformCross(IList<IChromosome> parents)
@@ -35,7 +38,15 @@ namespace GeneticConsole
             result = GetNewGenes(parent2.GetGenes(), index2, subtree2, subtree1);
             child2.SetGenes(result);
 
-            return new List<IChromosome>() { child1, child2 };
+            List<IChromosome> childs = new List<IChromosome>();
+
+            if (child1.Length < maxLength)
+                childs.Add(child1);
+
+            if (child2.Length < maxLength)
+                childs.Add(child2);
+
+            return childs;
         }
 
         private Gene[] GetNewGenes(Gene[] source, int indexToSlice, Gene[] search, Gene[] replace)

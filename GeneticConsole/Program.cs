@@ -83,12 +83,14 @@ namespace GeneticConsole
             //        break;
             //}
 
-            IChromosome chromosome = new ExpressionChromosome(funcLength);
+            int maxLength = 5 + 3 * funcLength;
+
+            IChromosome chromosome = new ExpressionChromosome(funcLength,  maxLength);
             IPopulation population = new Population(10000, 20000, chromosome);
             population.GenerationStrategy = new PerformanceGenerationStrategy();
             IFitness fitness = new ExpressionFitness(data.ToArray());
             ISelection selection = new EliteSelection();
-            ICrossover crossover = new ExpressionCrossover();
+            ICrossover crossover = new ExpressionCrossover(maxLength);
             IMutation mutation = new ExpressionMutation(funcLength);
             //IMutation mutation = new TickMutation();
 
