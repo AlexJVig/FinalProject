@@ -18,17 +18,43 @@ namespace GeneticConsole
     {
         static void Main(string[] args)
         {
+            string s = "2+5*(a*(b+5)-1)/2";
+            int variableNumber = 2;
+            string prefix = PrefixHelper.InfixToPrefix(s);
+
+            List<InputFunction> data = new List<InputFunction>();
+
+            for (int i = 0; i < 20; i++)
+            {
+                double[] values = new double[variableNumber];
+                for (int j = 0; j < variableNumber; j++)
+                    values[j] = RandomizationProvider.Current.GetDouble(-10, 10);
+
+                double result = PrefixHelper.EvaluatePrefix(prefix, values);
+                InputFunction input = new InputFunction(result, values);
+
+                data.Add(input);
+            }
+            // - / * X0 - / + X0 / X1 8.866 X3 X3 X3 / * -4.043 X1 X2
+            //string b = "-/*a-/+a/b9ddd/*zbc";
+            //for (int i = 0; i < 20; i++)
+            //{
+            //    double resultActual = PrefixHelper.EvaluatePrefix(prefix, data[i].Parameters);
+            //    double resultOur = PrefixHelper.EvaluatePrefix(b, data[i].Parameters);
+            //    Console.WriteLine($"Actual: {resultActual.ToString("0.00")} | Our: {resultOur.ToString("0.00")} | Diff: {Math.Abs(resultActual - resultOur).ToString("0.00")}");
+            //}
+
             // Sample data for 5A-7B
 
-            List<InputFunction> data = new List<InputFunction>()
-            {
-                new InputFunction(-15, 4,5),
-                new InputFunction(-2,1,1),
-                new InputFunction(8,-4,-4),
-                new InputFunction(-31,-2,3)
-            };
+            //List<InputFunction> data = new List<InputFunction>()
+            //{
+            //    new InputFunction(-15, 4,5),
+            //    new InputFunction(-2,1,1),
+            //    new InputFunction(8,-4,-4),
+            //    new InputFunction(-31,-2,3)
+            //};
 
-            int funcLength = 2;
+            //int funcLength = 2;
 
 
             // Sample data for 5A-7B-4C+2D
@@ -83,15 +109,15 @@ namespace GeneticConsole
             //        break;
             //}
 
-            int maxLength = 5 + 3 * funcLength;
+            int maxLength = 8 + 4 * variableNumber;
 
-            IChromosome chromosome = new ExpressionChromosome(funcLength,  maxLength);
-            IPopulation population = new Population(10000, 20000, chromosome);
+            IChromosome chromosome = new ExpressionChromosome(variableNumber,  maxLength);
+            IPopulation population = new Population(8500, 10000, chromosome);
             population.GenerationStrategy = new PerformanceGenerationStrategy();
             IFitness fitness = new ExpressionFitness(data.ToArray());
             ISelection selection = new EliteSelection();
             ICrossover crossover = new ExpressionCrossover(maxLength);
-            IMutation mutation = new ExpressionMutation(funcLength);
+            IMutation mutation = new ExpressionMutation(variableNumber);
             //IMutation mutation = new TickMutation();
 
             GeneticAlgorithm ga = new GeneticAlgorithm(population, fitness, selection, crossover, mutation);
@@ -114,7 +140,7 @@ namespace GeneticConsole
                     Console.WriteLine("\n--------\n");
                     Console.WriteLine("Generation: {0}", ga.Population.GenerationsNumber);
                     //Console.WriteLine("Time: {0}", ga.TimeEvolving);
-                    Console.WriteLine("Fitness: {0}", bestFitness);
+                    Console.WriteLine("Fitness: {0}", bestFitness.ToString("0.000"));
                     Console.WriteLine("Best: {0}", bestChromosome.ToString());
                 }
             };
