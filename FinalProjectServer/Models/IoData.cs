@@ -9,6 +9,8 @@ namespace FinalProjectServer.Models
 
         public IoData(string data)
         {
+            Data = new List<IoPair>();
+
             var rows = data.Split('\n', System.StringSplitOptions.RemoveEmptyEntries);
 
             foreach (var row in rows)
