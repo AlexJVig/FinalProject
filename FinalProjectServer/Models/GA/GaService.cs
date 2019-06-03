@@ -133,6 +133,61 @@ ga.Start();
             return GenerateCSharpFunction(bestChromosome.BuildFunction());
         }
 
+        private static string GetFunc(string mathRepresentation)
+        {
+            
+            return "";
+        }
+
+        private static string PrefixToInfix(string pre_exp)
+        {
+            Stack<string> s = new Stack<string>();
+
+            // length of expression 
+            int length = pre_exp.Length;
+
+            // reading from right to left 
+            for (int i = length - 1; i >= 0; i--)
+            {
+                // check if symbol is operator 
+                if (IsOperator(pre_exp[i]))
+                {
+                    // pop two operands from stack 
+                    string op1 = s.Peek(); s.Pop();
+                    string op2 = s.Peek(); s.Pop();
+
+                    // concat the operands and operator 
+                    string temp = "(" + op1 + pre_exp[i] + op2 + ")";
+
+                    // Push string temp back to stack 
+                    s.Push(temp);
+                }
+
+                // if symbol is an operand 
+                else
+                {
+                    // push the operand to the stack 
+                    s.Push(pre_exp[i]+"");
+                }
+            }
+
+            // Stack now contains the Infix expression 
+            return s.Peek();
+        }
+
+        private static Boolean IsOperator(char x)
+        {
+            switch (x)
+            {
+                case '+':
+                case '-':
+                case '/':
+                case '*':
+                    return true;
+            }
+            return false;
+        }
+
         private static string GenerateCSharpFunction(string mathRepresentation)
         {
             if (mathRepresentation.Contains(' '))
@@ -191,8 +246,9 @@ return {resultingFunction.ToString()};
 
             return cSharpFunction.ToString();
         }
+        
 
-        private static int GenerateLinear(string mathRepresentation)
+            private static int GenerateLinear(string mathRepresentation)
         {
             return - foo(mathRepresentation);
         }
