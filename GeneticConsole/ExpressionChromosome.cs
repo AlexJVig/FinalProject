@@ -13,6 +13,7 @@ namespace GeneticConsole
     {
         private Gene[] m_genes;
         private int m_variableCount;
+        private int m_maxDepth;
 
         public double? Fitness { get; set; }
 
@@ -28,22 +29,23 @@ namespace GeneticConsole
         }
 
 
-        public ExpressionChromosome(int variableCount)
+        public ExpressionChromosome(int variableCount, int maxDepth)
         {
             m_variableCount = variableCount;
-            m_genes = CreateGenes();
+            m_maxDepth = maxDepth;
+            m_genes = CreateGenes(maxDepth);
         }
 
-        private Gene[] CreateGenes()
+        private Gene[] CreateGenes(int maxDepth, int depth = 0)
         {
             List<Gene> genes = new List<Gene>();
-            Gene gene = CreateGene();
+            Gene gene = CreateGene(depth > maxDepth);
             genes.Add(gene);
 
             if (IsGeneOperator(gene))
             {
-                Gene[] left = CreateGenes();
-                Gene[] right = CreateGenes();
+                Gene[] left = CreateGenes(maxDepth, depth + 1);
+                Gene[] right = CreateGenes(maxDepth, depth + 1);
 
                 genes.AddRange(left);
                 genes.AddRange(right);
@@ -57,9 +59,10 @@ namespace GeneticConsole
             return (gene.Value as ExpressionGene).Type == GeneType.Operator;
         }
 
-        private Gene CreateGene()
+        private Gene CreateGene(bool isValue = false)
         {
-
+            // include ops if isValue is false
+            int includeOps = isValue ? 1 : 0;
             int type = RandomizationProvider.Current.GetInt(0, 3);
             GeneType geneType = (GeneType)type;
             Gene gene = new Gene(new ExpressionGene(geneType));
@@ -95,7 +98,7 @@ namespace GeneticConsole
             StringBuilder builder = new StringBuilder();
             for (int i = 0; i < Length; i++)
             {
-                builder.Append(m_genes[i].Value.ToString());
+                builder.Append(m_genes[i].Value + " ");
             }
             return builder.ToString();
         }
@@ -161,7 +164,7 @@ namespace GeneticConsole
         /// <returns>The new chromosome.</returns>
         public IChromosome CreateNew()
         {
-            return new ExpressionChromosome(m_variableCount);
+            return new ExpressionChromosome(m_variableCount, m_maxDepth);
         }
 
         /// <summary>

@@ -1,4 +1,4 @@
-﻿using GeneticSharp.Domain;
+using GeneticSharp.Domain;
 using GeneticSharp.Domain.Chromosomes;
 using GeneticSharp.Domain.Crossovers;
 using GeneticSharp.Domain.Fitnesses;
@@ -83,18 +83,20 @@ namespace GeneticConsole
             //        break;
             //}
 
-            IChromosome chromosome = new ExpressionChromosome(funcLength);
+            int maxLength = 5 + 3 * funcLength;
+
+            IChromosome chromosome = new ExpressionChromosome(funcLength,  maxLength);
             IPopulation population = new Population(10000, 20000, chromosome);
             population.GenerationStrategy = new PerformanceGenerationStrategy();
             IFitness fitness = new ExpressionFitness(data.ToArray());
             ISelection selection = new EliteSelection();
-            ICrossover crossover = new ExpressionCrossover();
-            IMutation mutation = new NoMutation();
+            ICrossover crossover = new ExpressionCrossover(maxLength);
+            IMutation mutation = new ExpressionMutation(funcLength);
             //IMutation mutation = new TickMutation();
 
             GeneticAlgorithm ga = new GeneticAlgorithm(population, fitness, selection, crossover, mutation);
-            ga.Termination = new FitnessThresholdTermination(0);
-            ga.MutationProbability = 0;//.5f;
+            ga.Termination = new ExpressionTermination(200);
+            ga.MutationProbability = .5f;
 
             double latestFitness = double.MinValue;
 
