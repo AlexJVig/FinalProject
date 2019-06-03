@@ -15,6 +15,16 @@ namespace FinalProjectServer.Controllers
             return Json(result);
         }
 
+        [HttpPost]
+        public IActionResult StartMutatingFreeText([FromBody]FreeTextData data)
+        {
+            var parsedData = new IoData(data.Points);
+
+            var result = GaService.StartGa(parsedData);
+
+            return Json(result);
+        }
+
         public IActionResult Index()
         {
             return View();
