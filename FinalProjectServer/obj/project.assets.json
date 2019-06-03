@@ -5300,7 +5300,7 @@
       ]
     },
     "Microsoft.AspNetCore.Razor.Design/2.1.2": {
-      "sha512": "ab4+TZw3Sxqrr5TwrwVyABeQkhSxYMJXgG6yZw7T+r6Vz+hcOt+pK79o15ESG7kZvWAK9wRG7emnTIia5O6R1Q==",
+      "sha512": "BclSBrm1mZzG1mjYG3Fm60ObVFa+DTKUkE0pZrg1nq7vJ/4whuLLQ3vk4ZsPAUbLyz4XiEyYNIMO1K/1Au+OLQ==",
       "type": "package",
       "path": "microsoft.aspnetcore.razor.design/2.1.2",
       "files": [
@@ -11717,24 +11717,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Noamyit\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "/Users/ofirz/.nuget/packages/": {},
+    "/usr/local/share/dotnet/sdk/NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Noamyit\\Downloads\\finalProject-merge\\FinalProject\\FinalProjectServer\\FinalProjectServer.csproj",
+      "projectUniqueName": "/Users/ofirz/Projects/FinalProject/FinalProjectServer/FinalProjectServer.csproj",
       "projectName": "FinalProjectServer",
-      "projectPath": "C:\\Users\\Noamyit\\Downloads\\finalProject-merge\\FinalProject\\FinalProjectServer\\FinalProjectServer.csproj",
-      "packagesPath": "C:\\Users\\Noamyit\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Noamyit\\Downloads\\finalProject-merge\\FinalProject\\FinalProjectServer\\obj\\",
+      "projectPath": "/Users/ofirz/Projects/FinalProject/FinalProjectServer/FinalProjectServer.csproj",
+      "packagesPath": "/Users/ofirz/.nuget/packages/",
+      "outputPath": "/Users/ofirz/Projects/FinalProject/FinalProjectServer/obj",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Noamyit\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "/Users/ofirz/.config/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp2.1"
@@ -11746,8 +11745,8 @@
       "frameworks": {
         "netcoreapp2.1": {
           "projectReferences": {
-            "C:\\Users\\Noamyit\\Downloads\\finalProject-merge\\FinalProject\\GeneticConsole\\GeneticConsole.csproj": {
-              "projectPath": "C:\\Users\\Noamyit\\Downloads\\finalProject-merge\\FinalProject\\GeneticConsole\\GeneticConsole.csproj"
+            "/Users/ofirz/Projects/FinalProject/GeneticConsole/GeneticConsole.csproj": {
+              "projectPath": "/Users/ofirz/Projects/FinalProject/GeneticConsole/GeneticConsole.csproj"
             }
           }
         }
