@@ -3,9 +3,9 @@
 }
 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         //get button by ID
-        $('#submitTextButton').on('click', function() {
+        $('#submitTextButton').on('click', function () {
             //call a function with parameters
             $.ajax({
                 headers: {
@@ -20,40 +20,44 @@
                     'VariableNames': '',
                     'Points': $('#freeInput').val()
                 }),
-                success: function(data, textStatus, jqXHR) {
-                generatedFunction = data;
-                window.location.replace(window.location.href + "Home/Result?func=" + data);
-            }
-        });
-        $('#submitTextButton').on('click', function() {
-            //call a function with parameters
-            //$.ajax({
-            //    headers: {
-            //        'Accept': 'application/json',
-            //        'Content-Type': 'application/json'
-            //    },
-            //    url: 'Home/startMutating',  //(rec)= Controller's-name
-            //    type: 'POST',
-            //    timeout: '12000',// (optional 12 seconds)
-            //    datatype: 'json',
-            //    data: $('#freeInput').val(),
-            //    success: function(data, textStatus, jqXHR) {
+                success: function (data, textStatus, jqXHR) {
+                    generatedFunction = data;
+                    window.location.replace(window.location.href + "Home/Result?func=" + data);
+                }
+            });
+            $('#submitTextButton').on('click', function () {
+                //call a function with parameters
+                //$.ajax({
+                //    headers: {
+                //        'Accept': 'application/json',
+                //        'Content-Type': 'application/json'
+                //    },
+                //    url: 'Home/startMutating',  //(rec)= Controller's-name
+                //    type: 'POST',
+                //    timeout: '12000',// (optional 12 seconds)
+                //    datatype: 'json',
+                //    data: $('#freeInput').val(),
+                //    success: function(data, textStatus, jqXHR) {
 
-            //        generatedFunction = data;
-            //        window.location.replace(window.location.href + "Home/Result?func=" + data);
-            //    }
-            //});
+                //        generatedFunction = data;
+                //        window.location.replace(window.location.href + "Home/Result?func=" + data);
+                //    }
+                //});
+            });
+
+            $('#submit').on('click', function () {
+                $('.loading').show();
+            });
         });
     });
-});
 </script>
 
 
 <head>
-<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 </head>
 <body>
-<script type="text/javascript" src="~/js/jquery-functastic.js"></script>
+    <script type="text/javascript" src="~/js/jquery-functastic.js"></script>
 </body>
 <div class="content">
     <div>
@@ -72,7 +76,7 @@
                     <p>
                         <input class="form-control" type="file" accept=".txt, .json">
 
-                        <a class="btn btn-default" asp-area="" asp-controller="Home" asp-action="Result">Run</a>
+                        <a class="btn btn-default" asp-area="" id="submit" asp-controller="Home" asp-action="Result">Run</a>
                     </p>
                 </div>
             </div>
@@ -81,7 +85,7 @@
                 <div class="carousel-caption" role="option">
                     <p>
                         <textarea class="form-control" style="resize: none;margin: 0px; width: 564px; height: 80px;">Here.</textarea>
-                        <a class="btn btn-default" href="Result.cshtml" style="margin-top: 3px;">
+                        <a class="btn btn-default" id="submit" href="Result.cshtml" style="margin-top: 3px;">
                             Run
                         </a>
                     </p>
@@ -100,3 +104,6 @@
     </div>
     <!--<span>Algorithm result: </span><span id="gaResult"></span>-->
 </div>
+
+<div class="loading" style="display:none;">Loading&#8230;</div>
+<!--<div class="lds-hourglass"></div>-->
