@@ -18,7 +18,7 @@ namespace GeneticConsole
     {
         static void Main(string[] args)
         {
-            string s = "c+5*(a*(b+5)-1)/c";
+            string s = "c-5*(a*(b+5)-1)/c*(a*b/c)";
             int variableNumber = 3;
             string prefix = PrefixHelper.InfixToPrefix(s);
 
