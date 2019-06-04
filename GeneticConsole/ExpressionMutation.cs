@@ -34,7 +34,7 @@ namespace GeneticConsole
                     GeneType type = (GeneType)RandomizationProvider.Current.GetInt(1, 3);
                     if (type == GeneType.Number)
                     {
-                        double num = RandomizationProvider.Current.GetInt(-10, 10); // Get from outside
+                        double num = RandomizationProvider.Current.GetDouble(-10, 10); // Get from outside
                         chromosome.ReplaceGene(index, new Gene(new ExpressionGene(type, null, num)));
                     }
                     else if (type == GeneType.Variable)

@@ -35,7 +35,7 @@ namespace GeneticConsole
                     return GetOperatorSymbol().ToString();
 
                 case GeneType.Number:
-                    return Number.ToString();
+                    return Number.ToString("0.000");
 
                 case GeneType.Variable:
                     return $"X{Variable}";
