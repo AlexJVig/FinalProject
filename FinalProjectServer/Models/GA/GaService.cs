@@ -9,6 +9,7 @@ using GeneticSharp.Domain.Fitnesses;
 using GeneticSharp.Domain.Mutations;
 using GeneticSharp.Domain.Populations;
 using GeneticSharp.Domain.Selections;
+using System.Linq;
 using GeneticSharp.Domain.Terminations;
 
 namespace FinalProjectServer.Models.GA
@@ -168,12 +169,24 @@ namespace FinalProjectServer.Models.GA
 
             ExpressionChromosome bestChromosome1 = ga.BestChromosome as ExpressionChromosome;
             ExpressionGene[] arrChromosome = bestChromosome1.GetExpressionGenes();
-           // Gene[] arrChromosome = ga.BestChromosome.GetGenes();
+            // Gene[] arrChromosome = ga.BestChromosome.GetGenes();
 
-           // GeneType.Number.GetType() == arrChromosome[0].GetType()
-           
+            // GeneType.Number.GetType() == arrChromosome[0].GetType()
+
             //return GenerateCSharpFunction(bestChromosome.BuildFunction());
-            return null;
+
+            var variables = arrChromosome.Where(x => x.Type == GeneType.Variable).Distinct().ToList();
+            var resultingFunction = GaService.PrefixToInfix(arrChromosome);
+
+            return GaService.GenerateCSharpFunction(variables, resultingFunction);
+        }
+
+        private static string GenerateCSharpFunction(List<ExpressionGene> variables, string mathRepresentation)
+        {
+            return $@"private double resultFunction({string.Join(", ", variables.Select(x => $"double {x}").ToList())})
+            {{
+                return {mathRepresentation};
+            }}";
         }
 
         private static string GetFunc(string mathRepresentation)
@@ -258,64 +271,64 @@ namespace FinalProjectServer.Models.GA
         //}
 
      
-        private static string GenerateCSharpFunction(string mathRepresentation)
-        {
-            if (mathRepresentation.Contains(' '))
-            {
-                var functions = mathRepresentation.Split(' ');
-                StringBuilder resultingFunction = new StringBuilder();
-                StringBuilder signature = new StringBuilder();
+//        private static string GenerateCSharpFunction(string mathRepresentation)
+//        {
+//            if (mathRepresentation.Contains(' '))
+//            {
+//                var functions = mathRepresentation.Split(' ');
+//                StringBuilder resultingFunction = new StringBuilder();
+//                StringBuilder signature = new StringBuilder();
 
-                Array.Resize(ref functions, functions.Length - 1); // Remove last element.
+//                Array.Resize(ref functions, functions.Length - 1); // Remove last element.
 
-                foreach (var function in functions)
-                {
-                    signature.Append($"int {function.Substring(function.Length - 1)}, ");
-                    resultingFunction.Append(GenerateCSharpFunction(function));
-                }
+//                foreach (var function in functions)
+//                {
+//                    signature.Append($"int {function.Substring(function.Length - 1)}, ");
+//                    resultingFunction.Append(GenerateCSharpFunction(function));
+//                }
 
-                resultingFunction = resultingFunction[0] == '+' ? resultingFunction.Remove(0, 2) : resultingFunction;
+//                resultingFunction = resultingFunction[0] == '+' ? resultingFunction.Remove(0, 2) : resultingFunction;
 
-                return $@"private int resultFunction({signature.Remove(signature.Length - 2, 2).ToString()})
-                          {{
-return {resultingFunction.ToString()};
-                          }}";
-            }
+//                return $@"private int resultFunction({signature.Remove(signature.Length - 2, 2).ToString()})
+//                          {{
+//return {resultingFunction.ToString()};
+        //                  }}";
+        //    }
 
-            StringBuilder remainingString = new StringBuilder(mathRepresentation);
-            StringBuilder cSharpFunction = new StringBuilder();
+        //    StringBuilder remainingString = new StringBuilder(mathRepresentation);
+        //    StringBuilder cSharpFunction = new StringBuilder();
 
-            // Check if contains negative coefficient.
-            if (mathRepresentation.Contains('-'))
-            {
-                cSharpFunction.Append("- ");
-                remainingString.Remove(0, 1);
-            }
-            else if (mathRepresentation.Contains('+'))
-            {
-                cSharpFunction.Append("+ ");
-                remainingString.Remove(0, 1);
-            }
-            else
-            {
-                cSharpFunction.Append("+ ");
-            }
+        //    // Check if contains negative coefficient.
+        //    if (mathRepresentation.Contains('-'))
+        //    {
+        //        cSharpFunction.Append("- ");
+        //        remainingString.Remove(0, 1);
+        //    }
+        //    else if (mathRepresentation.Contains('+'))
+        //    {
+        //        cSharpFunction.Append("+ ");
+        //        remainingString.Remove(0, 1);
+        //    }
+        //    else
+        //    {
+        //        cSharpFunction.Append("+ ");
+        //    }
 
-            // Check if polynomial.
-            if (mathRepresentation.Contains('^'))
-            {
-                var polynomial = remainingString.ToString().Split('^');
-            }
+        //    // Check if polynomial.
+        //    if (mathRepresentation.Contains('^'))
+        //    {
+        //        var polynomial = remainingString.ToString().Split('^');
+        //    }
 
-            // Get coefficient number.
-            var variable = remainingString.ToString().Substring(remainingString.Length - 1, 1);
-            var coefficient = remainingString.Remove(remainingString.Length - 1, 1).ToString();
+        //    // Get coefficient number.
+        //    var variable = remainingString.ToString().Substring(remainingString.Length - 1, 1);
+        //    var coefficient = remainingString.Remove(remainingString.Length - 1, 1).ToString();
 
-            cSharpFunction.Append(coefficient);
-            cSharpFunction.Append($" * {variable}");
+        //    cSharpFunction.Append(coefficient);
+        //    cSharpFunction.Append($" * {variable}");
 
-            return cSharpFunction.ToString();
-        }
+        //    return cSharpFunction.ToString();
+        //}
         
 
             private static int GenerateLinear(string mathRepresentation)

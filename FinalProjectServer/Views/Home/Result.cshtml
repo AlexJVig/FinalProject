@@ -9,7 +9,7 @@
         $(document).ready(function () {
             var pageUrl = window.location.search.split('=');
 
-            console.log(pageUrl[1]);
+            console.log(decodeURIComponent(pageUrl[1]));
             $('#resultSection').text(decodeURIComponent(pageUrl[1]));
         });
     </script>
@@ -25,7 +25,7 @@
 </div>
 
 <div>
-    <pre style="background-color: #1d1f21 !important"><code class="C#">function(x,y){ 
+    <pre style="background-color: #1d1f21 !important"><code id="resultSection" class="C#">function(x,y){ 
 var i = x+y;
 return x+y;   
 }
@@ -40,7 +40,7 @@ return x+y;
     <span></span>
     <div class="content">
 
-        <p id="resultSection"></p>
+        <p></p>
     </div>
 
 </div>-->

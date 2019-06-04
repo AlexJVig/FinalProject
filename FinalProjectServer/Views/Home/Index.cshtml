@@ -14,7 +14,6 @@
                 },
                 url: 'Home/StartMutatingFreeText',
                 type: 'POST',
-                timeout: '12000',// (optional 12 seconds)
                 datatype: 'json',
                 data: JSON.stringify({
                     'VariableNames': '',
@@ -45,6 +44,7 @@
             //});
         });
     });
+    });
 </script>
 <div margin: auto;>
     <h1>Functastic</h1>
@@ -64,7 +64,6 @@
                     <a id="submitFileButton" class="btn btn-default" href="">
                         Run
                     </a>
-                    <a class="btn btn-default" asp-area="" asp-controller="Home" asp-action="Result">Run</a>
                 </p>
             </div>
         </div>
@@ -73,7 +72,7 @@
             <div class="carousel-caption" role="option">
                 <textarea cols="5" id="freeInput" class="form-control"></textarea>
                 <button type="button" class="btn btn-default btn-sm" id="submitTextButton">
-                    Find Parameters
+                    Run
                 </button>
             </div>
         </div>
