@@ -10,6 +10,8 @@ using GeneticSharp.Domain.Terminations;
 using GeneticSharp.Extensions.Mathematic;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using System.Threading;
 
 namespace GeneticConsole
@@ -23,20 +25,33 @@ namespace GeneticConsole
             string prefix = PrefixHelper.InfixToPrefix(s);
 
             List<InputFunction> data = new List<InputFunction>();
-
             int sampleDataSize = 20;
 
-            for (int i = 0; i < sampleDataSize; i++)
+            using (StreamWriter sw = new StreamWriter("InputData.txt"))
             {
-                double[] values = new double[variableNumber];
-                for (int j = 0; j < variableNumber; j++)
-                    values[j] = RandomizationProvider.Current.GetDouble(-10, 10);
+                for (int i = 0; i < sampleDataSize; i++)
+                {
+                    sw.Write("(");
+                    double[] values = new double[variableNumber];
+                    for (int j = 0; j < variableNumber; j++)
+                    {
+                        values[j] = RandomizationProvider.Current.GetDouble(-10, 10);
+                        sw.Write(values[j]);
+                        if (j < variableNumber - 1)
+                            sw.Write(',');
+                    }
+                    sw.Write(")(");
 
-                double result = PrefixHelper.EvaluatePrefix(prefix, values);
-                InputFunction input = new InputFunction(result, values);
+                    double result = PrefixHelper.EvaluatePrefix(prefix, values);
+                    sw.WriteLine(result + ")");
 
-                data.Add(input);
+                    InputFunction input = new InputFunction(result, values);
+
+                    data.Add(input);
+                }
             }
+
+            #region old sample data
 
             // Sample data for 5A-7B
 
@@ -102,6 +117,8 @@ namespace GeneticConsole
             //    if (input == "done")
             //        break;
             //}
+
+            #endregion
 
             int maxLength = 6 + 5 * variableNumber;
 
