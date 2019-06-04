@@ -3,9 +3,12 @@
 }
 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
+
+        $('.loading').hide();
+
         //get button by ID
-        $('#submitTextButton').on('click', function() {
+        $('#submitTextButton').on('click', function () {
             //call a function with parameters
             $.ajax({
                 headers: {
@@ -38,12 +41,19 @@
             //    data: $('#freeInput').val(),
             //    success: function(data, textStatus, jqXHR) {
 
-            //        generatedFunction = data;
-            //        window.location.replace(window.location.href + "Home/Result?func=" + data);
-            //    }
-            //});
+                //        generatedFunction = data;
+                //        window.location.replace(window.location.href + "Home/Result?func=" + data);
+                //    }
+                //});
+            });
+
+            $('#submitFileButton').on('click', function () {
+                $('.loading').show();
+            });
+            $('#submitTextButton').on('click', function () {
+                $('.loading').show();
+            });
         });
-    });
     });
 </script>
 <div margin: auto;>
@@ -86,4 +96,5 @@
         <span class="sr-only">Next</span>
     </a>
 </div>
-<span>Algorithm result: </span></span><span id="gaResult"></span>
+
+<div class="loading">Loading&#8230;</div>
