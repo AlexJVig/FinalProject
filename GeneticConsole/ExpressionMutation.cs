@@ -7,7 +7,7 @@ using System.Text;
 
 namespace GeneticConsole
 {
-    class ExpressionMutation : MutationBase
+    public class ExpressionMutation : MutationBase
     {
         int variableCount;
 

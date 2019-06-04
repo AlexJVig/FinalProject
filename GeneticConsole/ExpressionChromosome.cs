@@ -223,6 +223,11 @@ namespace GeneticConsole
             return m_genes;
         }
 
+        public ExpressionGene[] GetExpressionGenes()
+        {
+            return GetGenes().Select(x => x.Value).Cast<ExpressionGene>().ToArray();
+        }
+
         /// <summary>
         /// Replaces the gene in the specified index.
         /// </summary>

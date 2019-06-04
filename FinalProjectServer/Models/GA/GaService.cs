@@ -63,76 +63,201 @@ namespace FinalProjectServer.Models.GA
             int funcLength = data.Data[0].Input.Count;
 
 
-        // Custom data input
+            // Custom data input
 
-        //Console.WriteLine("Enter function length:");
-        //int funcLength = int.Parse(Console.ReadLine());
+            //Console.WriteLine("Enter function length:");
+            //int funcLength = int.Parse(Console.ReadLine());
 
-        //int[] parameters = new int[funcLength];
+            //int[] parameters = new int[funcLength];
 
-        //while (true) 
-        //{
-        //    for (int i = 0; i < funcLength; i++)
-        //    {
-        //        Console.WriteLine("Enter #{0} param:", i);
-        //        parameters[i] = int.Parse(Console.ReadLine());
-        //    }
+            //while (true) 
+            //{
+            //    for (int i = 0; i < funcLength; i++)
+            //    {
+            //        Console.WriteLine("Enter #{0} param:", i);
+            //        parameters[i] = int.Parse(Console.ReadLine());
+            //    }
 
-        //    Console.WriteLine("Enter result:");
-        //    int result = int.Parse(Console.ReadLine());
+            //    Console.WriteLine("Enter result:");
+            //    int result = int.Parse(Console.ReadLine());
 
-        //    data.Add(new InputFunction(result, parameters));
+            //    data.Add(new InputFunction(result, parameters));
 
-        //    Console.WriteLine("press enter to continue, or write 'done' to start the ga");
-        //    string input = Console.ReadLine();
-        //    if (input == "done")
-        //        break;
-        //}
+            //    Console.WriteLine("press enter to continue, or write 'done' to start the ga");
+            //    string input = Console.ReadLine();
+            //    if (input == "done")
+            //        break;
+            //}
 
-        IChromosome chromosome = new FunctionChromosome(-10, 10, funcLength);
-            IPopulation population = new Population(10000, 20000, chromosome)
-            {
-                GenerationStrategy = new PerformanceGenerationStrategy()
-            };
-            IFitness fitness = new FunctionFitness(inputsList.ToArray());
-        ISelection selection = new EliteSelection();
-        ICrossover crossover = new OnePointCrossover();
-        IMutation mutation = new UniformMutation(true);
+            //        IChromosome chromosome = new FunctionChromosome(-10, 10, funcLength);
+            //            IPopulation population = new Population(10000, 20000, chromosome)
+            //            {
+            //                GenerationStrategy = new PerformanceGenerationStrategy()
+            //            };
+            //            IFitness fitness = new FunctionFitness(inputsList.ToArray());
+            //        ISelection selection = new EliteSelection();
+            //        ICrossover crossover = new OnePointCrossover();
+            //        IMutation mutation = new UniformMutation(true);
+            //            //IMutation mutation = new TickMutation();
+
+            //            var ga = new GeneticAlgorithm(population, fitness, selection, crossover, mutation)
+            //            {
+            //                Termination = new FitnessThresholdTermination(0),
+            //                MutationProbability = .5f
+            //            };
+
+            //            double latestFitness = double.MinValue;
+            //            FunctionChromosome bestChromosome = null;
+
+            //        ga.GenerationRan += (sender, e) =>
+            //            {
+            //                //Console.Title = ga.TimeEvolving.ToString();
+            //                //Console.Title = ga.Population.CurrentGeneration.Chromosomes.Count.ToString();
+
+            //                bestChromosome = ga.BestChromosome as FunctionChromosome;
+            //        double bestFitness = bestChromosome.Fitness.Value;
+            //                if (bestFitness != latestFitness)
+            //                {
+            //                    latestFitness = bestFitness;
+
+            //                    //Console.WriteLine("\n--------\n");
+            //                    //Console.WriteLine("Generation: {0}", ga.Population.GenerationsNumber);
+            //                    //Console.WriteLine("Time: {0}", ga.TimeEvolving);
+            //                    //Console.WriteLine("Fitness: {0}", bestFitness);
+            //                    //Console.WriteLine("Best: {0}", bestChromosome.BuildFunction());
+            //                }
+            //};
+
+            int maxLength = 5 + 3 * funcLength;
+
+            IChromosome chromosome = new ExpressionChromosome(funcLength, maxLength);
+            IPopulation population = new Population(10000, 20000, chromosome);
+            population.GenerationStrategy = new PerformanceGenerationStrategy();
+            IFitness fitness = new ExpressionFitness(inputsList.ToArray());
+            ISelection selection = new EliteSelection();
+            ICrossover crossover = new ExpressionCrossover(maxLength);
+            IMutation mutation = new ExpressionMutation(funcLength);
             //IMutation mutation = new TickMutation();
 
-            var ga = new GeneticAlgorithm(population, fitness, selection, crossover, mutation)
-            {
-                Termination = new FitnessThresholdTermination(0),
-                MutationProbability = .5f
-            };
+            GeneticAlgorithm ga = new GeneticAlgorithm(population, fitness, selection, crossover, mutation);
+            ga.Termination = new ExpressionTermination(200);
+            ga.MutationProbability = .5f;
 
             double latestFitness = double.MinValue;
-            FunctionChromosome bestChromosome = null;
 
-        ga.GenerationRan += (sender, e) =>
+            ga.GenerationRan += (sender, e) =>
             {
-                //Console.Title = ga.TimeEvolving.ToString();
+                Console.Title = ga.TimeEvolving.ToString();
                 //Console.Title = ga.Population.CurrentGeneration.Chromosomes.Count.ToString();
 
-                bestChromosome = ga.BestChromosome as FunctionChromosome;
-        double bestFitness = bestChromosome.Fitness.Value;
+                ExpressionChromosome bestChromosome = ga.BestChromosome as ExpressionChromosome;
+                double bestFitness = bestChromosome.Fitness.Value;
                 if (bestFitness != latestFitness)
                 {
                     latestFitness = bestFitness;
 
-                    //Console.WriteLine("\n--------\n");
-                    //Console.WriteLine("Generation: {0}", ga.Population.GenerationsNumber);
+                    Console.WriteLine("\n--------\n");
+                    Console.WriteLine("Generation: {0}", ga.Population.GenerationsNumber);
                     //Console.WriteLine("Time: {0}", ga.TimeEvolving);
-                    //Console.WriteLine("Fitness: {0}", bestFitness);
-                    //Console.WriteLine("Best: {0}", bestChromosome.BuildFunction());
+                    Console.WriteLine("Fitness: {0}", bestFitness);
+                    Console.WriteLine("Best: {0}", bestChromosome.ToString());
                 }
-};
+            };
 
-ga.Start();
+            ga.Start();
 
-            return GenerateCSharpFunction(bestChromosome.BuildFunction());
+            ExpressionChromosome bestChromosome1 = ga.BestChromosome as ExpressionChromosome;
+            ExpressionGene[] arrChromosome = bestChromosome1.GetExpressionGenes();
+           // Gene[] arrChromosome = ga.BestChromosome.GetGenes();
+
+           // GeneType.Number.GetType() == arrChromosome[0].GetType()
+           
+            //return GenerateCSharpFunction(bestChromosome.BuildFunction());
+            return null;
         }
 
+        private static string GetFunc(string mathRepresentation)
+        {
+            //string prefix = "";
+            //string str = "Public String Func(){@return " + PrefixToInfix(prefix) + ";@}";
+            
+            //str = str.Replace("@", "@" + System.Environment.NewLine);
+            return "";
+        }
+
+        private static string PrefixToInfix(ExpressionGene[] pre_exp)
+        {
+            Stack<string> s = new Stack<string>();
+
+            // length of expression 
+            int length = pre_exp.Length;
+
+            // reading from right to left 
+            for (int i = length - 1; i >= 0; i--)
+            {
+                // check if symbol is operator 
+                if (pre_exp[i].Type == GeneType.Operator)
+                {
+                    // pop two operands from stack 
+                    string op1 = s.Peek(); s.Pop();
+                    string op2 = s.Peek(); s.Pop();
+
+                    // concat the operands and operator 
+                    string temp = "(" + op1 + pre_exp[i] + op2 + ")";
+
+                    // Push string temp back to stack 
+                    s.Push(temp);
+                }
+
+                // if symbol is an operand 
+                else
+                {
+                    // push the operand to the stack 
+                    s.Push(pre_exp[i] + "");
+                }
+            }
+
+            // Stack now contains the Infix expression 
+            return s.Peek();
+        }
+
+        //private static string PrefixToInfix(string pre_exp)
+        //{
+        //    Stack<string> s = new Stack<string>();
+
+        //    // length of expression 
+        //    int length = pre_exp.Length;
+
+        //    // reading from right to left 
+        //    for (int i = length - 1; i >= 0; i--)
+        //    {
+        //        // check if symbol is operator 
+        //        if (IsOperator(pre_exp[i]))
+        //        {
+        //            // pop two operands from stack 
+        //            string op1 = s.Peek(); s.Pop();
+        //            string op2 = s.Peek(); s.Pop();
+
+        //            // concat the operands and operator 
+        //            string temp = "(" + op1 + pre_exp[i] + op2 + ")";
+
+        //            // Push string temp back to stack 
+        //            s.Push(temp);
+        //        }
+
+        //        // if symbol is an operand 
+        //        else
+        //        {
+        //            // push the operand to the stack 
+        //            s.Push(pre_exp[i]+"");
+        //        }
+        //    }
+
+        //    // Stack now contains the Infix expression 
+        //    return s.Peek();
+        //}
+
+     
         private static string GenerateCSharpFunction(string mathRepresentation)
         {
             if (mathRepresentation.Contains(' '))
@@ -191,8 +316,9 @@ return {resultingFunction.ToString()};
 
             return cSharpFunction.ToString();
         }
+        
 
-        private static int GenerateLinear(string mathRepresentation)
+            private static int GenerateLinear(string mathRepresentation)
         {
             return - foo(mathRepresentation);
         }
