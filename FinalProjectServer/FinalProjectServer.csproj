@@ -14,7 +14,6 @@
     <Content Remove="wwwroot\images\ChooseFile.svg" />
     <Content Remove="wwwroot\images\ChooseFile44.svg" />
     <Content Remove="wwwroot\images\EnterData.svg" />
-    <Content Remove="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="wwwroot\images\ChooseFile.svg" />
