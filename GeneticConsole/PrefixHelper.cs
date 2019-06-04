@@ -1,5 +1,7 @@
-﻿using System;
+﻿using GeneticSharp.Domain.Chromosomes;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace GeneticConsole
@@ -168,6 +170,31 @@ namespace GeneticConsole
                     double a = stack.Pop();
                     double b = stack.Pop();
                     stack.Push(Compute(a, b, ch));
+                }
+            }
+
+            return stack.Pop();
+        }
+
+        public static double EvaluatePrefix(Gene[] genes, params double[] variables)
+        {
+            ExpressionGene[] prefix = genes.Select(x => x.Value).Cast<ExpressionGene>().ToArray();
+
+            Stack<double> stack = new Stack<double>();
+
+            for (int i = prefix.Length - 1; i >= 0; i--)
+            {
+                ExpressionGene gene = prefix[i];
+
+                if (gene.Type == GeneType.Number)
+                    stack.Push(gene.Number);
+                else if (gene.Type == GeneType.Variable)
+                    stack.Push(variables[gene.Variable]);
+                else
+                {
+                    double a = stack.Pop();
+                    double b = stack.Pop();
+                    stack.Push(Compute(a, b, gene.Operator));
                 }
             }
 

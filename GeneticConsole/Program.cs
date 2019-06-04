@@ -18,13 +18,15 @@ namespace GeneticConsole
     {
         static void Main(string[] args)
         {
-            string s = "2+5*(a*(b+5)-1)/2";
-            int variableNumber = 2;
+            string s = "c+5*(a*(b+5)-1)/c";
+            int variableNumber = 3;
             string prefix = PrefixHelper.InfixToPrefix(s);
 
             List<InputFunction> data = new List<InputFunction>();
 
-            for (int i = 0; i < 20; i++)
+            int sampleDataSize = 20;
+
+            for (int i = 0; i < sampleDataSize; i++)
             {
                 double[] values = new double[variableNumber];
                 for (int j = 0; j < variableNumber; j++)
@@ -35,14 +37,6 @@ namespace GeneticConsole
 
                 data.Add(input);
             }
-            // - / * X0 - / + X0 / X1 8.866 X3 X3 X3 / * -4.043 X1 X2
-            //string b = "-/*a-/+a/b9ddd/*zbc";
-            //for (int i = 0; i < 20; i++)
-            //{
-            //    double resultActual = PrefixHelper.EvaluatePrefix(prefix, data[i].Parameters);
-            //    double resultOur = PrefixHelper.EvaluatePrefix(b, data[i].Parameters);
-            //    Console.WriteLine($"Actual: {resultActual.ToString("0.00")} | Our: {resultOur.ToString("0.00")} | Diff: {Math.Abs(resultActual - resultOur).ToString("0.00")}");
-            //}
 
             // Sample data for 5A-7B
 
@@ -109,7 +103,7 @@ namespace GeneticConsole
             //        break;
             //}
 
-            int maxLength = 8 + 4 * variableNumber;
+            int maxLength = 6 + 5 * variableNumber;
 
             IChromosome chromosome = new ExpressionChromosome(variableNumber,  maxLength);
             IPopulation population = new Population(8500, 10000, chromosome);
@@ -140,7 +134,7 @@ namespace GeneticConsole
                     Console.WriteLine("\n--------\n");
                     Console.WriteLine("Generation: {0}", ga.Population.GenerationsNumber);
                     //Console.WriteLine("Time: {0}", ga.TimeEvolving);
-                    Console.WriteLine("Fitness: {0}", bestFitness.ToString("0.000"));
+                    Console.WriteLine("Fitness: {0}", bestFitness.ToString("0.00"));
                     Console.WriteLine("Best: {0}", bestChromosome.ToString());
                 }
             };
@@ -149,7 +143,48 @@ namespace GeneticConsole
 
             Console.WriteLine("\nTime: {0}", ga.TimeEvolving);
 
+            double sum = 0;
+            double[] diffs = new double[sampleDataSize];
+
+            for (int i = 0; i < sampleDataSize; i++)
+            {
+                double resultActual = PrefixHelper.EvaluatePrefix(prefix, data[i].Parameters);
+                double resultOur = PrefixHelper.EvaluatePrefix(ga.BestChromosome.GetGenes(), data[i].Parameters);
+                double diff = Math.Abs(resultActual - resultOur);
+                Console.WriteLine($"Actual: {resultActual.ToString("0.00")} | Our: {resultOur.ToString("0.00")} | Diff: {diff.ToString("0.00")}");
+                sum += diff;
+                diffs[i] = diff;
+            }
+
+            double avgDiff = sum / sampleDataSize;
+            Console.Write($"Average diff: {avgDiff.ToString("0.00")} | Median: {GetMedian(diffs).ToString("0.00")}");
+
             Console.ReadKey();
+        }
+
+        public static double GetMedian(double[] array)
+        {
+            double[] tempArray = array;
+            int count = tempArray.Length;
+
+            Array.Sort(tempArray);
+
+            double medianValue = 0;
+
+            if (count % 2 == 0)
+            {
+                // count is even, need to get the middle two elements, add them together, then divide by 2
+                double middleElement1 = tempArray[(count / 2) - 1];
+                double middleElement2 = tempArray[(count / 2)];
+                medianValue = (middleElement1 + middleElement2) / 2;
+            }
+            else
+            {
+                // count is odd, simply get the middle element.
+                medianValue = tempArray[(count / 2)];
+            }
+
+            return medianValue;
         }
     }
 }
