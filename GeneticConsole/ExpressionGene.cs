@@ -5,7 +5,7 @@ using System.Text;
 namespace GeneticConsole
 {
     public enum GeneType { Operator, Number, Variable };
-    public enum Operator { Add, Substract, Multiply, Divide, Pow };
+    public enum Operator { Add, Substract, Multiply, Divide };
 
     public class ExpressionGene
     {
@@ -124,8 +124,8 @@ namespace GeneticConsole
                 case GeneticConsole.Operator.Divide:
                     return '/';
 
-                case GeneticConsole.Operator.Pow:
-                    return '^';
+                //case GeneticConsole.Operator.Pow:
+                //    return '^';
 
                 default:
                     return '?';

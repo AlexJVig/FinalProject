@@ -24,8 +24,8 @@ namespace GeneticConsole
                 case Operator.Divide:
                     return a / b;
 
-                case Operator.Pow:
-                    return Math.Pow(a, b);
+                //case Operator.Pow:
+                //    return Math.Pow(a, b);
 
                 default:
                     throw new ArgumentException("invalid operator");
@@ -54,9 +54,9 @@ namespace GeneticConsole
                     op = Operator.Divide;
                     break;
 
-                case '^':
-                    op = Operator.Pow;
-                    break;
+                //case '^':
+                //    op = Operator.Pow;
+                //    break;
 
                 default:
                     throw new ArgumentException("invalid operator");
