@@ -60,7 +60,7 @@ namespace GeneticConsole
 
             m_lastFitness = bestFitness;
 
-            return m_stagnantGenerationsCount >= ExpectedStagnantGenerationsNumber || bestFitness == 0;
+            return m_stagnantGenerationsCount >= ExpectedStagnantGenerationsNumber || bestFitness == 0 || geneticAlgorithm.TimeEvolving.TotalSeconds > 60;
         }
         #endregion
     }

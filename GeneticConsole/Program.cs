@@ -18,17 +18,37 @@ namespace GeneticConsole
     {
         static void Main(string[] args)
         {
+            string s = "c-5*(a*(b+5)-1)/c*(a*b/c)";
+            int variableNumber = 3;
+            string prefix = PrefixHelper.InfixToPrefix(s);
+
+            List<InputFunction> data = new List<InputFunction>();
+
+            int sampleDataSize = 20;
+
+            for (int i = 0; i < sampleDataSize; i++)
+            {
+                double[] values = new double[variableNumber];
+                for (int j = 0; j < variableNumber; j++)
+                    values[j] = RandomizationProvider.Current.GetDouble(-10, 10);
+
+                double result = PrefixHelper.EvaluatePrefix(prefix, values);
+                InputFunction input = new InputFunction(result, values);
+
+                data.Add(input);
+            }
+
             // Sample data for 5A-7B
 
-            List<InputFunction> data = new List<InputFunction>()
-            {
-                new InputFunction(-15, 4,5),
-                new InputFunction(-2,1,1),
-                new InputFunction(8,-4,-4),
-                new InputFunction(-31,-2,3)
-            };
+            //List<InputFunction> data = new List<InputFunction>()
+            //{
+            //    new InputFunction(-15, 4,5),
+            //    new InputFunction(-2,1,1),
+            //    new InputFunction(8,-4,-4),
+            //    new InputFunction(-31,-2,3)
+            //};
 
-            int funcLength = 2;
+            //int funcLength = 2;
 
 
             // Sample data for 5A-7B-4C+2D
@@ -83,15 +103,15 @@ namespace GeneticConsole
             //        break;
             //}
 
-            int maxLength = 5 + 3 * funcLength;
+            int maxLength = 6 + 5 * variableNumber;
 
-            IChromosome chromosome = new ExpressionChromosome(funcLength,  maxLength);
-            IPopulation population = new Population(10000, 20000, chromosome);
+            IChromosome chromosome = new ExpressionChromosome(variableNumber,  maxLength);
+            IPopulation population = new Population(8500, 10000, chromosome);
             population.GenerationStrategy = new PerformanceGenerationStrategy();
             IFitness fitness = new ExpressionFitness(data.ToArray());
             ISelection selection = new EliteSelection();
             ICrossover crossover = new ExpressionCrossover(maxLength);
-            IMutation mutation = new ExpressionMutation(funcLength);
+            IMutation mutation = new ExpressionMutation(variableNumber);
             //IMutation mutation = new TickMutation();
 
             GeneticAlgorithm ga = new GeneticAlgorithm(population, fitness, selection, crossover, mutation);
@@ -114,7 +134,7 @@ namespace GeneticConsole
                     Console.WriteLine("\n--------\n");
                     Console.WriteLine("Generation: {0}", ga.Population.GenerationsNumber);
                     //Console.WriteLine("Time: {0}", ga.TimeEvolving);
-                    Console.WriteLine("Fitness: {0}", bestFitness);
+                    Console.WriteLine("Fitness: {0}", bestFitness.ToString("0.00"));
                     Console.WriteLine("Best: {0}", bestChromosome.ToString());
                 }
             };
@@ -123,7 +143,48 @@ namespace GeneticConsole
 
             Console.WriteLine("\nTime: {0}", ga.TimeEvolving);
 
+            double sum = 0;
+            double[] diffs = new double[sampleDataSize];
+
+            for (int i = 0; i < sampleDataSize; i++)
+            {
+                double resultActual = PrefixHelper.EvaluatePrefix(prefix, data[i].Parameters);
+                double resultOur = PrefixHelper.EvaluatePrefix(ga.BestChromosome.GetGenes(), data[i].Parameters);
+                double diff = Math.Abs(resultActual - resultOur);
+                Console.WriteLine($"Actual: {resultActual.ToString("0.00")} | Our: {resultOur.ToString("0.00")} | Diff: {diff.ToString("0.00")}");
+                sum += diff;
+                diffs[i] = diff;
+            }
+
+            double avgDiff = sum / sampleDataSize;
+            Console.Write($"Average diff: {avgDiff.ToString("0.00")} | Median: {GetMedian(diffs).ToString("0.00")}");
+
             Console.ReadKey();
+        }
+
+        public static double GetMedian(double[] array)
+        {
+            double[] tempArray = array;
+            int count = tempArray.Length;
+
+            Array.Sort(tempArray);
+
+            double medianValue = 0;
+
+            if (count % 2 == 0)
+            {
+                // count is even, need to get the middle two elements, add them together, then divide by 2
+                double middleElement1 = tempArray[(count / 2) - 1];
+                double middleElement2 = tempArray[(count / 2)];
+                medianValue = (middleElement1 + middleElement2) / 2;
+            }
+            else
+            {
+                // count is odd, simply get the middle element.
+                medianValue = tempArray[(count / 2)];
+            }
+
+            return medianValue;
         }
     }
 }

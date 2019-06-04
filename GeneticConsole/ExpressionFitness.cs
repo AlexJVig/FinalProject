@@ -30,6 +30,9 @@ namespace GeneticConsole
                 fitness += Math.Abs(result - func.Result);
             }
 
+            if (double.IsNaN(fitness))
+                return -1000;
+
             return fitness * -1;
         }
     }
