@@ -1,30 +1,8 @@
-<<<<<<< HEAD
-﻿@{
-ViewData["Title"] = "Functastic";
-=======
 @{
     ViewData["Title"] = "Functastic";
->>>>>>> createTextInputFormat
 }
 
 <script>
-<<<<<<< HEAD
-$(document).ready(function () {
-    //get button by ID
-    $('#submitTextButton').on('click', function () {
-        //call a function with parameters
-        $.ajax({
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            url: 'Home/startMutating',  //(rec)= Controller's-name
-            type: 'POST',
-            timeout: '12000',// (optional 12 seconds)
-            datatype: 'json',
-            data: $('#freeInput').val(),
-            success: function (data, textStatus, jqXHR) {
-=======
     $(document).ready(function() {
         //get button by ID
         $('#submitTextButton').on('click', function() {
@@ -43,10 +21,8 @@ $(document).ready(function () {
                     'Points': $('#freeInput').val()
                 }),
                 success: function(data, textStatus, jqXHR) {
->>>>>>> createTextInputFormat
-
-                generatedFunction = data;
-                window.location.replace(window.location.href + "Home/Result?func=" + data);
+                    generatedFunction = data;
+                    window.location.replace(window.location.href + "Home/Result?func=" + data);
             }
         });
         $('#submitTextButton').on('click', function() {
@@ -69,63 +45,6 @@ $(document).ready(function () {
             //});
         });
     });
-<<<<<<< HEAD
-});
-</script>
-
-
-<head>
-<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-</head>
-<body>
-<script type="text/javascript" src="~/js/jquery-functastic.js"></script>
-</body>
-<div class="content">
-    <div>
-        <h1>Functastic</h1>
-    </div>
-    <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
-        <ol class="carousel-indicators">
-            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-            <li data-target="#myCarousel" data-slide-to="1"></li>
-
-        </ol>
-        <div class="carousel-inner" role="listbox">
-            <div class="item active">
-                <img src="~/images/ChooseFile44.svg" alt="ASP.NET" class="img-responsive" />
-                <div class="carousel-caption" role="option">
-                    <p>
-                        <input class="form-control" type="file" accept=".txt, .json">
-
-                        <a class="btn btn-default" asp-area="" asp-controller="Home" asp-action="Result">Run</a>
-                    </p>
-                </div>
-            </div>
-            <div class="item">
-                <img src="~/images/EnterData.svg" alt="Visual Studio" class="img-responsive" />
-                <div class="carousel-caption" role="option">
-                    <p>
-                        <textarea class="form-control" style="resize: none;margin: 0px; width: 564px; height: 80px;">Here.</textarea>
-                        <a class="btn btn-default" href="Result.cshtml" style="margin-top: 3px;">
-                            Run
-                        </a>
-                    </p>
-                </div>
-            </div>
-
-        </div>
-        <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a>
-    </div>
-    <!--<span>Algorithm result: </span><span id="gaResult"></span>-->
-</div>
-=======
 </script>
 <div margin: auto;>
     <h1>Functastic</h1>
@@ -169,4 +88,3 @@ $(document).ready(function () {
     </a>
 </div>
 <span>Algorithm result: </span></span><span id="gaResult"></span>
->>>>>>> createTextInputFormat
