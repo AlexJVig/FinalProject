@@ -20,7 +20,7 @@ namespace GeneticConsole
     {
         static void Main(string[] args)
         {
-            string s = "c-5*(a*(b+5)-1)/c*(a*b/c)";
+            string s = "c-5*(a*(b+5)-1)/c+(a*b/c)";
             int variableNumber = 3;
             string prefix = PrefixHelper.InfixToPrefix(s);
 
@@ -174,7 +174,28 @@ namespace GeneticConsole
             }
 
             double avgDiff = sum / sampleDataSize;
-            Console.Write($"Average diff: {avgDiff.ToString("0.00")} | Median: {GetMedian(diffs).ToString("0.00")}");
+            Console.WriteLine($"Average diff: {avgDiff.ToString("0.00")} | Median: {GetMedian(diffs).ToString("0.00")}");
+
+            Console.WriteLine("\n ---- New Samples ---- \n");
+
+            for (int i = 0; i < sampleDataSize; i++)
+            {
+                double[] values = new double[variableNumber];
+                for (int j = 0; j < variableNumber; j++)
+                {
+                    values[j] = RandomizationProvider.Current.GetDouble(-10, 10);
+                }
+
+                double result = PrefixHelper.EvaluatePrefix(prefix, values);
+                double our = PrefixHelper.EvaluatePrefix(ga.BestChromosome.GetGenes(), values);
+                double diff = Math.Abs(result - our);
+                Console.WriteLine($"Actual: {result.ToString("0.00")} | Our: {our.ToString("0.00")} | Diff: {diff.ToString("0.00")}");
+                sum += diff;
+                diffs[i] = diff;
+            }
+
+            avgDiff = sum / sampleDataSize;
+            Console.WriteLine($"Average diff: {avgDiff.ToString("0.00")} | Median: {GetMedian(diffs).ToString("0.00")}");
 
             Console.ReadKey();
         }
