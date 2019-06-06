@@ -20,9 +20,12 @@ namespace GeneticConsole
     {
         static void Main(string[] args)
         {
-            string s = "c-5*(a*(b+5)-1)/c+(a*b/c)";
+            string s1 = "c-5*(a*(b+5)-1)/c+(a*b/c)";
+            string s2 = "a*b*c+(a/2)*b-(c/(b+9))";
+
             int variableNumber = 3;
-            string prefix = PrefixHelper.InfixToPrefix(s);
+            string prefix1 = PrefixHelper.InfixToPrefix(s1);
+            string prefix2 = PrefixHelper.InfixToPrefix(s2);
 
             List<InputFunction> data = new List<InputFunction>();
             int sampleDataSize = 20;
@@ -42,10 +45,12 @@ namespace GeneticConsole
                     }
                     sw.Write(")(");
 
-                    double result = PrefixHelper.EvaluatePrefix(prefix, values);
-                    sw.WriteLine(result + ")");
+                    double result1 = PrefixHelper.EvaluatePrefix(prefix1, values);
+                    double result2 = PrefixHelper.EvaluatePrefix(prefix2, values);
 
-                    InputFunction input = new InputFunction(result, values);
+                    sw.WriteLine($"{result1},{result2})");
+
+                    InputFunction input = new InputFunction(result1, values);
 
                     data.Add(input);
                 }
@@ -129,7 +134,6 @@ namespace GeneticConsole
             ISelection selection = new EliteSelection();
             ICrossover crossover = new ExpressionCrossover(maxLength);
             IMutation mutation = new ExpressionMutation(variableNumber);
-            //IMutation mutation = new TickMutation();
 
             GeneticAlgorithm ga = new GeneticAlgorithm(population, fitness, selection, crossover, mutation);
             ga.Termination = new ExpressionTermination(200);
@@ -165,7 +169,7 @@ namespace GeneticConsole
 
             for (int i = 0; i < sampleDataSize; i++)
             {
-                double resultActual = PrefixHelper.EvaluatePrefix(prefix, data[i].Parameters);
+                double resultActual = PrefixHelper.EvaluatePrefix(prefix1, data[i].Parameters);
                 double resultOur = PrefixHelper.EvaluatePrefix(ga.BestChromosome.GetGenes(), data[i].Parameters);
                 double diff = Math.Abs(resultActual - resultOur);
                 Console.WriteLine($"Actual: {resultActual.ToString("0.00")} | Our: {resultOur.ToString("0.00")} | Diff: {diff.ToString("0.00")}");
@@ -186,7 +190,7 @@ namespace GeneticConsole
                     values[j] = RandomizationProvider.Current.GetDouble(-10, 10);
                 }
 
-                double result = PrefixHelper.EvaluatePrefix(prefix, values);
+                double result = PrefixHelper.EvaluatePrefix(prefix1, values);
                 double our = PrefixHelper.EvaluatePrefix(ga.BestChromosome.GetGenes(), values);
                 double diff = Math.Abs(result - our);
                 Console.WriteLine($"Actual: {result.ToString("0.00")} | Our: {our.ToString("0.00")} | Diff: {diff.ToString("0.00")}");

@@ -76,15 +76,9 @@ namespace GeneticConsole
             for (int i = 0; i < builder.Length; i++)
             {
                 if (builder[i] == '(')
-                {
                     builder[i] = ')';
-                    i++;
-                }
                 else if (builder[i] == ')')
-                {
                     builder[i] = '(';
-                    i++;
-                }
             }
 
             string prefix = InfixToPostfix(builder.ToString());

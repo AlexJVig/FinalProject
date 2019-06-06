@@ -4,13 +4,13 @@ namespace FinalProjectServer.Models
 {
     public class IoPair
     {
-        public ICollection<double> Input
+        public IList<double> Input
         {
             get;
             set;
         }
 
-        public ICollection<double> Output
+        public IList<double> Output
         {
             get;
             set;

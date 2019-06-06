@@ -11,10 +11,10 @@ namespace FinalProjectServer.Models.GA
         {
         }
 
-        public InputFunction(IoPair pair)
+        public InputFunction(IoPair pair, int outputIndex = 0)
         {
             Parameters = GetInputArray(pair);
-            Result = pair.Output.FirstOrDefault();
+            Result = pair.Output[outputIndex];
         }
 
         private double[] GetInputArray(IoPair pair)

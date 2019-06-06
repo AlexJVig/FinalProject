@@ -11,6 +11,7 @@ using GeneticSharp.Domain.Populations;
 using GeneticSharp.Domain.Selections;
 using System.Linq;
 using GeneticSharp.Domain.Terminations;
+using System.Threading.Tasks;
 
 namespace FinalProjectServer.Models.GA
 {
@@ -18,167 +19,58 @@ namespace FinalProjectServer.Models.GA
     {
         public static string StartGa(IoData data)
         {
-            // Sample data for 5A-7B
+            var inputsList = new List<InputFunction>[data.Data[0].Output.Count];
 
-            //List<InputFunction> data = new List<InputFunction>()
-            //{
-            //    new InputFunction(-15, 4,5),
-            //    new InputFunction(-2,1,1),
-            //    new InputFunction(8,-4,-4),
-            //    new InputFunction(-31,-2,3)
-            //};
-
-            //int funcLength = 2;
-
-
-            // Sample data for 5A-7B-4C+2D
-
-            //List<InputFunction> data = new List<InputFunction>()
-            //{
-            //    new InputFunction(11, 4,5,-5,3),
-            //    new InputFunction(12,1,1,0,7),
-            //    new InputFunction(0,-4,-4,3,2),
-            //    new InputFunction(-9,-2,3,-7,-3)
-            //};
-
-            //int funcLength = 4;
-
-
-            // Sample data for 5A-7B-4C+2D+0E+1F+9G
-
-            //List<InputFunction> data = new List<InputFunction>()
-            //{
-            //    new InputFunction(152,4,5,-5,3,8,6,15),
-            //    new InputFunction(221,1,1,0,7,-25,-7,24),
-            //    new InputFunction(-269,-4,-4,3,2,-1,55,-36),
-            //    new InputFunction(384,-2,3,-7,-3,0,-12,45)
-            //};
-
-            var inputsList = new List<InputFunction>();
+            for (int i = 0; i < inputsList.Length; i++)
+            {
+                inputsList[i] = new List<InputFunction>();
+            }
 
             foreach (var entry in data.Data)
             {
-                inputsList.Add(new InputFunction(entry));
+                for (int i = 0; i < inputsList.Length; i++)
+                {
+                    inputsList[i].Add(new InputFunction(entry, i));
+                }
             }
 
-            int funcLength = data.Data[0].Input.Count;
+            Task<string>[] tasks = new Task<string>[inputsList.Length];
 
+            for (int i = 0; i < inputsList.Length; i++)
+            {
+                tasks[i] = Task.Run(() => RunGA(inputsList[i].ToArray()));
+            }
 
-            // Custom data input
+            Task.WaitAll(tasks);
+            return string.Join('\n', tasks.Select(x => x.Result));
+        }
 
-            //Console.WriteLine("Enter function length:");
-            //int funcLength = int.Parse(Console.ReadLine());
-
-            //int[] parameters = new int[funcLength];
-
-            //while (true) 
-            //{
-            //    for (int i = 0; i < funcLength; i++)
-            //    {
-            //        Console.WriteLine("Enter #{0} param:", i);
-            //        parameters[i] = int.Parse(Console.ReadLine());
-            //    }
-
-            //    Console.WriteLine("Enter result:");
-            //    int result = int.Parse(Console.ReadLine());
-
-            //    data.Add(new InputFunction(result, parameters));
-
-            //    Console.WriteLine("press enter to continue, or write 'done' to start the ga");
-            //    string input = Console.ReadLine();
-            //    if (input == "done")
-            //        break;
-            //}
-
-            //        IChromosome chromosome = new FunctionChromosome(-10, 10, funcLength);
-            //            IPopulation population = new Population(10000, 20000, chromosome)
-            //            {
-            //                GenerationStrategy = new PerformanceGenerationStrategy()
-            //            };
-            //            IFitness fitness = new FunctionFitness(inputsList.ToArray());
-            //        ISelection selection = new EliteSelection();
-            //        ICrossover crossover = new OnePointCrossover();
-            //        IMutation mutation = new UniformMutation(true);
-            //            //IMutation mutation = new TickMutation();
-
-            //            var ga = new GeneticAlgorithm(population, fitness, selection, crossover, mutation)
-            //            {
-            //                Termination = new FitnessThresholdTermination(0),
-            //                MutationProbability = .5f
-            //            };
-
-            //            double latestFitness = double.MinValue;
-            //            FunctionChromosome bestChromosome = null;
-
-            //        ga.GenerationRan += (sender, e) =>
-            //            {
-            //                //Console.Title = ga.TimeEvolving.ToString();
-            //                //Console.Title = ga.Population.CurrentGeneration.Chromosomes.Count.ToString();
-
-            //                bestChromosome = ga.BestChromosome as FunctionChromosome;
-            //        double bestFitness = bestChromosome.Fitness.Value;
-            //                if (bestFitness != latestFitness)
-            //                {
-            //                    latestFitness = bestFitness;
-
-            //                    //Console.WriteLine("\n--------\n");
-            //                    //Console.WriteLine("Generation: {0}", ga.Population.GenerationsNumber);
-            //                    //Console.WriteLine("Time: {0}", ga.TimeEvolving);
-            //                    //Console.WriteLine("Fitness: {0}", bestFitness);
-            //                    //Console.WriteLine("Best: {0}", bestChromosome.BuildFunction());
-            //                }
-            //};
-
+        private static string RunGA(InputFunction[] inputs)
+        {
+            int funcLength = inputs[0].Parameters.Length;
             int maxLength = 5 + 3 * funcLength;
 
             IChromosome chromosome = new ExpressionChromosome(funcLength, maxLength);
-            IPopulation population = new Population(10000, 20000, chromosome);
+            IPopulation population = new Population(8500, 10000, chromosome);
             population.GenerationStrategy = new PerformanceGenerationStrategy();
-            IFitness fitness = new ExpressionFitness(inputsList.ToArray());
+            IFitness fitness = new ExpressionFitness(inputs.ToArray());
             ISelection selection = new EliteSelection();
             ICrossover crossover = new ExpressionCrossover(maxLength);
             IMutation mutation = new ExpressionMutation(funcLength);
-            //IMutation mutation = new TickMutation();
 
             GeneticAlgorithm ga = new GeneticAlgorithm(population, fitness, selection, crossover, mutation);
             ga.Termination = new ExpressionTermination(200);
             ga.MutationProbability = .5f;
 
-            double latestFitness = double.MinValue;
-
-            ga.GenerationRan += (sender, e) =>
-            {
-                Console.Title = ga.TimeEvolving.ToString();
-                //Console.Title = ga.Population.CurrentGeneration.Chromosomes.Count.ToString();
-
-                ExpressionChromosome bestChromosome = ga.BestChromosome as ExpressionChromosome;
-                double bestFitness = bestChromosome.Fitness.Value;
-                if (bestFitness != latestFitness)
-                {
-                    latestFitness = bestFitness;
-
-                    Console.WriteLine("\n--------\n");
-                    Console.WriteLine("Generation: {0}", ga.Population.GenerationsNumber);
-                    //Console.WriteLine("Time: {0}", ga.TimeEvolving);
-                    Console.WriteLine("Fitness: {0}", bestFitness);
-                    Console.WriteLine("Best: {0}", bestChromosome.ToString());
-                }
-            };
-
             ga.Start();
 
-            ExpressionChromosome bestChromosome1 = ga.BestChromosome as ExpressionChromosome;
-            ExpressionGene[] arrChromosome = bestChromosome1.GetExpressionGenes();
-            // Gene[] arrChromosome = ga.BestChromosome.GetGenes();
-
-            // GeneType.Number.GetType() == arrChromosome[0].GetType()
-
-            //return GenerateCSharpFunction(bestChromosome.BuildFunction());
-
+            ExpressionChromosome bestChromosome = ga.BestChromosome as ExpressionChromosome;
+            ExpressionGene[] arrChromosome = bestChromosome.GetExpressionGenes();
+        
             var variables = arrChromosome.Where(x => x.Type == GeneType.Variable).Distinct().ToList();
             var resultingFunction = GaService.PrefixToInfix(arrChromosome);
 
-            return GaService.GenerateCSharpFunction(variables, resultingFunction);
+            return GenerateCSharpFunction(variables, resultingFunction);
         }
 
         private static string GenerateCSharpFunction(List<ExpressionGene> variables, string mathRepresentation)
