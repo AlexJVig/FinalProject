@@ -2,15 +2,18 @@
 using Microsoft.AspNetCore.Mvc;
 using FinalProjectServer.Models;
 using FinalProjectServer.Models.GA;
+using Newtonsoft.Json;
 
 namespace FinalProjectServer.Controllers
 {
     public class HomeController : Controller
     {
         [HttpPost]
-        public IActionResult StartMutating([FromBody]IoData data)
+        public IActionResult StartMutating([FromBody]FreeTextData data)
         {
-            var result = GaService.StartGa(data);
+            var ioData = JsonConvert.DeserializeObject<IoData>(data.Points);
+
+            var result = GaService.StartGa(ioData);
 
             return Json(result);
         }
