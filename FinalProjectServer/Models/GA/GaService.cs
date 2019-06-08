@@ -12,6 +12,7 @@ using GeneticSharp.Domain.Selections;
 using System.Linq;
 using GeneticSharp.Domain.Terminations;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace FinalProjectServer.Models.GA
 {
@@ -34,19 +35,30 @@ namespace FinalProjectServer.Models.GA
                 }
             }
 
-            Task<string>[] tasks = new Task<string>[inputsList.Length];
+            Task<ExpressionChromosome>[] tasks = new Task<ExpressionChromosome>[inputsList.Length];
 
             for (int i = 0; i < inputsList.Length; i++)
             {
-                tasks[i] = Task.Run(() => RunGA(inputsList[i].ToArray()));
+                var inputs = inputsList[i].ToArray();
+                tasks[i] = Task.Run(() => RunGA(inputs));
             }
 
-            Task.WaitAll(tasks);
-            return string.Join('\n', tasks.Select(x => x.Result));
+            try
+            {
+                Task.WaitAll(tasks);
+            }
+            catch(Exception ex)
+            {
+                return ex.ToString();
+            }
+
+            string result = GenerateCSharpFunction(tasks.Select(x=>x.Result).ToArray(), data.Data[0].Input.Count);
+            return result;
         }
 
-        private static string RunGA(InputFunction[] inputs)
+        private static ExpressionChromosome RunGA(InputFunction[] inputs)
         {
+            Debug.WriteLine(string.Join(',', inputs.Select(x=>x.Result)));
             int funcLength = inputs[0].Parameters.Length;
             int maxLength = 5 + 3 * funcLength;
 
@@ -64,21 +76,34 @@ namespace FinalProjectServer.Models.GA
 
             ga.Start();
 
-            ExpressionChromosome bestChromosome = ga.BestChromosome as ExpressionChromosome;
-            ExpressionGene[] arrChromosome = bestChromosome.GetExpressionGenes();
-        
-            var variables = arrChromosome.Where(x => x.Type == GeneType.Variable).Distinct().ToList();
-            var resultingFunction = GaService.PrefixToInfix(arrChromosome);
-
-            return GenerateCSharpFunction(variables, resultingFunction);
+           return ga.BestChromosome as ExpressionChromosome;
         }
 
-        private static string GenerateCSharpFunction(List<ExpressionGene> variables, string mathRepresentation)
+        private static string GenerateCSharpFunction(ExpressionChromosome[] results, int variableCount)
         {
-            return $@"private double resultFunction({string.Join(", ", variables.Select(x => $"double {x}").ToList())})
-            {{
-                return {mathRepresentation};
-            }}";
+            string[] mathReps = results.Select(x => PrefixToInfix(x.GetExpressionGenes())).ToArray();
+            string[] variablesArray = Enumerable.Range(0, variableCount).Select(i => $"double X{i}").ToArray();
+            string variablesString = string.Join(", ", variablesArray);
+
+            if (results.Length == 1)
+            {
+                return $@"private dobule resultFunction({variablesString})
+                {{
+                    return {mathReps[0]};
+                }}";
+            }
+            else
+            {
+                string[] tempVars = mathReps.Select((x, i) => $"double result{i} = {x};\n").ToArray();
+                string[] varNames = Enumerable.Range(0, results.Length).Select(x => $"result{x}").ToArray();
+
+                return $@"private dobule[] resultFunction({variablesString})
+                {{
+                    {string.Join("\n", tempVars)}
+                    double[] result = new double[] {{ {string.Join(", ", varNames)} }};
+                    return result;
+                }}";
+            }
         }
 
         private static string GetFunc(string mathRepresentation)
@@ -123,7 +148,11 @@ namespace FinalProjectServer.Models.GA
             }
 
             // Stack now contains the Infix expression 
-            return s.Peek();
+            string result = s.Peek();
+
+            result = result.Replace("+-", "-");
+            result = result.Replace("--", "+");
+            return result;
         }
 
         //private static string PrefixToInfix(string pre_exp)
@@ -162,28 +191,28 @@ namespace FinalProjectServer.Models.GA
         //    return s.Peek();
         //}
 
-     
-//        private static string GenerateCSharpFunction(string mathRepresentation)
-//        {
-//            if (mathRepresentation.Contains(' '))
-//            {
-//                var functions = mathRepresentation.Split(' ');
-//                StringBuilder resultingFunction = new StringBuilder();
-//                StringBuilder signature = new StringBuilder();
 
-//                Array.Resize(ref functions, functions.Length - 1); // Remove last element.
+        //        private static string GenerateCSharpFunction(string mathRepresentation)
+        //        {
+        //            if (mathRepresentation.Contains(' '))
+        //            {
+        //                var functions = mathRepresentation.Split(' ');
+        //                StringBuilder resultingFunction = new StringBuilder();
+        //                StringBuilder signature = new StringBuilder();
 
-//                foreach (var function in functions)
-//                {
-//                    signature.Append($"int {function.Substring(function.Length - 1)}, ");
-//                    resultingFunction.Append(GenerateCSharpFunction(function));
-//                }
+        //                Array.Resize(ref functions, functions.Length - 1); // Remove last element.
 
-//                resultingFunction = resultingFunction[0] == '+' ? resultingFunction.Remove(0, 2) : resultingFunction;
+        //                foreach (var function in functions)
+        //                {
+        //                    signature.Append($"int {function.Substring(function.Length - 1)}, ");
+        //                    resultingFunction.Append(GenerateCSharpFunction(function));
+        //                }
 
-//                return $@"private int resultFunction({signature.Remove(signature.Length - 2, 2).ToString()})
-//                          {{
-//return {resultingFunction.ToString()};
+        //                resultingFunction = resultingFunction[0] == '+' ? resultingFunction.Remove(0, 2) : resultingFunction;
+
+        //                return $@"private int resultFunction({signature.Remove(signature.Length - 2, 2).ToString()})
+        //                          {{
+        //return {resultingFunction.ToString()};
         //                  }}";
         //    }
 
@@ -221,9 +250,9 @@ namespace FinalProjectServer.Models.GA
 
         //    return cSharpFunction.ToString();
         //}
-        
 
-            private static int GenerateLinear(string mathRepresentation)
+
+        private static int GenerateLinear(string mathRepresentation)
         {
             return - foo(mathRepresentation);
         }
