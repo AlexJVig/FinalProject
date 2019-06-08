@@ -29,11 +29,39 @@
                     window.location.replace(window.location.href + "Home/Result?func=" + data);
             }
         });
-           
+
             $('#submitFileButton').on('click', function () {
                 $('.loading').show();
             });
         });
+
+        document.getElementById('fileInput').addEventListener('change', handleFileSelect, false);
+
+        function handleFileSelect(evt) {
+            var file = evt.target.files[0]; // FileList object
+            var fileReader = new FileReader();
+
+            fileReader.readAsText(file);
+            fileReader.onload = function () {
+                $.ajax({
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    url: 'Home/StartMutating',
+                    type: 'POST',
+                    datatype: 'json',
+                    data: JSON.stringify({
+                        'VariableNames': '',
+                        'Points': fileReader.result
+                    }),
+                    success: function(data, textStatus, jqXHR) {
+                        generatedFunction = data;
+                        window.location.replace(window.location.href + "Home/Result?func=" + data);
+                    }
+                });
+            }
+        }
     });
 </script>
 <div margin: auto;>
@@ -50,7 +78,7 @@
             <img src="~/images/ChooseFile44.svg" alt="ASP.NET" class="img-responsive" />
             <div class="carousel-caption" role="option">
                 <p>
-                    <input class="form-control" type="file" accept=".txt, .json">
+                    <input id="fileInput" class="form-control" type="file" accept=".txt, .json">
                     <a id="submitFileButton" class="btn btn-default" href="">
                         Run
                     </a>
