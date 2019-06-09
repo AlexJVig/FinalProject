@@ -65,12 +65,34 @@ footer {
     margin-top: 50px;
 }
 
+#resultLabel {
+    margin-bottom: 20px;
+    color: white;
+}
+
+.mainContent {
+    color:white;
+}
+
+nav {
+    box-shadow: black 0 0 3px;
+    
+}
+    nav li {
+        background-color: none;
+        transition: background-color .2s;
+    }
+    nav li:hover {
+        background-color: #292929;
+    }
+
 h2 {
     font-family: Lulro;
     text-align: center;
 }
 
 h3 {
+    color:white;
     font-family: Lulro !important;
 }
 .navbar-inverse {
@@ -88,7 +110,6 @@ body {
     padding-top: 50px;
     padding-bottom: 20px;
     background-color: #1d1f21;
-    color:white;
 }
 
 /* Wrapping element */
