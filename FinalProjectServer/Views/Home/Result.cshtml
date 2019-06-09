@@ -7,10 +7,6 @@
 
     <script>
         $(document).ready(function () {
-            var pageUrl = window.location.search.split('=');
-
-            var x = decodeURIComponent(pageUrl[1]);
-            $('#resultSection').html(x);
             hljs.initHighlightingOnLoad();
         });
     </script>
@@ -30,6 +26,6 @@
 
 <div>
     <pre style="background-color: #1d1f21 !important">
-        <code id="resultSection" class="C#"></code>
+        <code id="resultSection" class="C#">@ViewData["result"]</code>
     </pre>
 </div>

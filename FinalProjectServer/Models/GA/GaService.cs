@@ -87,22 +87,24 @@ namespace FinalProjectServer.Models.GA
 
             if (results.Length == 1)
             {
-                return $@"private dobule resultFunction({variablesString})
-                {{
-                    return {mathReps[0]};
-                }}";
+                return $@"{'\n'}
+private dobule resultFunction({variablesString})
+{{
+    return {mathReps[0]};
+}}";
             }
             else
             {
-                string[] tempVars = mathReps.Select((x, i) => $"double result{i} = {x};\n").ToArray();
+                string[] tempVars = mathReps.Select((x, i) => $"double result{i} = {x};").ToArray();
                 string[] varNames = Enumerable.Range(0, results.Length).Select(x => $"result{x}").ToArray();
 
-                return $@"private dobule[] resultFunction({variablesString})
-                {{
-                    {string.Join("\n", tempVars)}
-                    double[] result = new double[] {{ {string.Join(", ", varNames)} }};
-                    return result;
-                }}";
+                return $@"{'\n'}
+private dobule[] resultFunction({variablesString})
+{{
+    {string.Join("\n    ", tempVars)}
+    double[] result = new double[] {{ {string.Join(", ", varNames)} }};
+    return result;
+}}";
             }
         }
 
