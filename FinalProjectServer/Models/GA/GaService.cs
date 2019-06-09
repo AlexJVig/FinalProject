@@ -13,6 +13,7 @@ using System.Linq;
 using GeneticSharp.Domain.Terminations;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using GeneticSharp.Domain.Randomizations;
 
 namespace FinalProjectServer.Models.GA
 {
@@ -115,6 +116,42 @@ private dobule[] resultFunction({variablesString})
             
             //str = str.Replace("@", "@" + System.Environment.NewLine);
             return "";
+        }
+
+        public static string GenerateSampleData(string equation)
+        {
+            string prefix = PrefixHelper.InfixToPrefix(equation);
+
+            List<Models.GA.InputFunction> data = new List<Models.GA.InputFunction>();
+
+            int sampleDataSize = 20;
+            int variableNumber = equation.Where(x => char.IsLetter(x)).Distinct().Count();
+
+            StringBuilder result = new StringBuilder();
+
+            for (int i = 0; i < sampleDataSize; i++)
+            {
+                result.Append("(");
+                double[] values = new double[variableNumber];
+                for (int j = 0; j < variableNumber; j++)
+                {
+                    values[j] = RandomizationProvider.Current.GetDouble(-10, 10);
+                    result.Append(values[j]);
+                    if (j < variableNumber - 1)
+                        result.Append(',');
+                }
+                result.Append(")(");
+
+                double result1 = PrefixHelper.EvaluatePrefix(prefix, values);
+
+                result.AppendLine($"{result1})");
+
+                InputFunction input = new InputFunction(result1, values);
+
+                data.Add(input);
+            }
+
+            return result.ToString();
         }
 
         private static string PrefixToInfix(ExpressionGene[] pre_exp)

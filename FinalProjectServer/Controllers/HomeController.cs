@@ -28,6 +28,14 @@ namespace FinalProjectServer.Controllers
             return Json(result);
         }
 
+        [HttpPost]
+        public IActionResult GenerateInputData([FromBody]EquationInput data)
+        {
+            string result = GaService.GenerateSampleData(data.Equation);
+            return Json(result);
+        }
+
+
         public IActionResult Index()
         {
             return View();
@@ -48,6 +56,11 @@ namespace FinalProjectServer.Controllers
         }
 
         public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        public IActionResult GenerateInput()
         {
             return View();
         }
