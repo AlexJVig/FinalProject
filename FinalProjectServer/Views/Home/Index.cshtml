@@ -4,6 +4,18 @@
 
 <script>
     var selectedFile;
+    var variableCount = 0;
+
+    var getVariableNames = function () {
+        var variables = '';
+
+        variables += $('#X0').val();
+
+        for (var i = 1; i < variableCount; i++)
+            variables += ',' + $('#X' + i).val();
+
+        return variables;
+    }
 
     function handleFileSelect(evt) {
         var file = evt.target.files[0]; // FileList object
@@ -17,9 +29,10 @@
 
     $(document).ready(function () {
         $('.progress').hide();
+
         //get button by ID
         $('#submitTextButton').on('click', function (event) {
-            startLoader()
+            startLoader();
             $.ajax({
                 headers: {
                     'Accept': 'application/json',
@@ -29,8 +42,9 @@
                 type: 'POST',
                 datatype: 'json',
                 data: JSON.stringify({
-                    'VariableNames': '',
-                    'Points': $('#freeInput').val()
+                    'FunctionName': $('#funcNameText').val(),
+                    'VariableNames': getVariableNames(),
+                    'Points': $('#freeText').val()
                 }),
                 success: function (data, textStatus, jqXHR) {
                     redirect(data);
@@ -39,7 +53,7 @@
         });
 
         $('#submitFileButton').on('click', function (event) {
-            startLoader()
+            startLoader();
             $.ajax({
                 headers: {
                     'Accept': 'application/json',
@@ -49,7 +63,8 @@
                 type: 'POST',
                 datatype: 'json',
                 data: JSON.stringify({
-                    'VariableNames': '',
+                    'FunctionName': $('#funcNameFile').val(),
+                    'VariableNames': getVariableNames(),
                     'Points': selectedFile.result
                 }),
                 success: function(data, textStatus, jqXHR) {
@@ -64,25 +79,27 @@
             var openingBracket = false;
             var data = line.split(/[()]/).filter(i => i);
 
+            $('#textVariables').empty(); // Clear previous items.
+
             if (data.length !== 2) {
                 // fail
             } else {
                 var inputs = data[0].split(/[ ,]/).filter(i => i);
                 var outputs = data[1].split(/[ ,]/).filter(i => i);
 
-                for (int i = 0; i < inputs.length; i++) {
-                    $('').append('');
-                }
+                variableCount = 0;
 
-                for (int i = 0; i < outputs.length; i++) {
-                    $('').append('');
+                for (var i = 0; i < inputs.length; i++) {
+                    var currentVar = 'X' + i;
+
+                    $('#textVariables').append('<label>Variable Name: </label><input id="' + currentVar + '" type="text" class="form-control" style="width: 175px;" />');
+                    variableCount++;
                 }
             }
         });
 
         function redirect(result) {
             $('#inset_form').html('<form action="Home/Result" name="send" method="post" style="display:none;"><textarea name="result">' + result +'</textarea></form>');
-
             document.forms['send'].submit();
         }
 
@@ -111,28 +128,30 @@
         <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
         <li data-target="#myCarousel" data-slide-to="1"></li>
     </ol>
-    <div class="carousel-inner" role="listbox">
+    <div class="carousel-inner" role="listbox" style="">
         <div class="item active">
-            <img src="~/images/ChooseFile44.svg" alt="ASP.NET" class="img-responsive" />
+            <img src="~/images/ChooseFile44.svg" alt="ASP.NET" class="img-responsive" style="height: 500px;" />
             <div class="carousel-caption" role="option">
                 <input id="fileInput" class="form-control" type="file" accept=".txt, .json">
-                <div id="fileVariables" style="display: inline; float: left;">
+                <div>
                     <label>Function Name: </label>
-                    <input type="text" class="form-control" style="width: 175px;"/>
+                    <input id="funcNameFile" type="text" class="form-control" style="width: 175px;"/>
                 </div>
+                <div id="fileVariables" style="display: inline; float: left;"></div>
                 <button id="submitFileButton" type="button" class="btn btn-primary ">
                     Run
                 </button>
             </div>
         </div>
         <div class="item">
-            <img src="~/images/EnterData.svg" alt="Visual Studio" class="img-responsive" />
+            <img src="~/images/EnterData.svg" alt="Visual Studio" class="img-responsive"  style="height: 500px;" />
             <div class="carousel-caption" role="option">
-                <textarea id="freeText" cols="5" id="freeInput" class="form-control"></textarea>
-                <div id="textVariables" style="display: inline; float: left;">
+                <textarea id="freeText" cols="5" class="form-control"></textarea>
+                <div>
                     <label>Function Name: </label>
-                    <input type="text" class="form-control" style="width: 175px;" />
+                    <input id="funcNameText" type="text" class="form-control" style="width: 175px;" />
                 </div>
+                <div id="textVariables" style="display: inline; float: left;"></div>
                 <button type="button" class="btn btn-default btn-sm" id="submitTextButton">
                     Run
                 </button>
