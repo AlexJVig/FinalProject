@@ -1,0 +1,50 @@
+﻿
+@{
+    ViewData["Title"] = "GenerateInput";
+}
+<script>
+
+    $(document).ready(function () {
+        $("#resultsContainer").hide();
+
+        $('#copyBtn').on('click', function (event) {
+            copyToClipboard(document.getElementById("resultSection"));
+        });
+
+        //get button by ID
+        $('#submitBtn').on('click', function (event) {
+            //startLoader()
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                url: '/Home/GenerateInputData',
+                type: 'POST',
+                datatype: 'json',
+                data: JSON.stringify({
+                    'Equation': $("#equation").val()
+                }),
+                success: function (data, textStatus, jqXHR) {
+                    //$("#resultsContainer").fadeIn();
+                    $("#resultSection").html(data)
+                    copyToClipboard(document.getElementById("resultSection"));
+                },
+                error: function () {
+                }
+            });
+        });
+    });
+</script>
+<h1>Generate Input</h1>
+<div class="jumbotron eqContainer">
+    <div class="form-group">
+        <input type="text" class="form-control" id="equation" placeholder="3*a+5/(b-c*3-a)...">
+    </div>
+    <button type="submit" class="btn btn-default" id="submitBtn">Submit</button>
+</div>
+
+<div id="resultsContainer">
+    <button type="submit" class="btn btn-default" id="copyBtn">Copy</button>
+    <pre id="resultSection" class="C#"></pre>
+</div>

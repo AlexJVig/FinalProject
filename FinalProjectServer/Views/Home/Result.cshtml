@@ -6,8 +6,14 @@
 
     <script>
         $(document).ready(function () {
-             hljs.initHighlighting();
+            hljs.initHighlighting();
+
+            $('#copyBtn').on('click', function (event) {
+                copyToClipboard(document.getElementById("resultSection"));
+            });
         });
+
+
     </script>
     <style>
         pre {
@@ -25,6 +31,9 @@
 
 <div>
     <pre style="background-color: #1d1f21 !important">
-        <code id="resultSection" class="C#">@ViewData["result"]</code>
+    <code id="resultSection" class="C#">@ViewData["result"]</code>
     </pre>
+    <div style="text-align:center;">
+        <button type="submit" class="btn btn-default" id="copyBtn">Copy</button>
+    </div>
 </div>

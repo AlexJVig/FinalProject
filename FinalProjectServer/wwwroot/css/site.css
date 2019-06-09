@@ -86,6 +86,17 @@ nav {
         background-color: #292929;
     }
 
+.eqContainer{
+    background-color: transparent;
+    text-align: center;
+    padding-bottom: 20px;
+}
+
+#resultSection {
+    color: white;
+    background: #1d1f21;
+}
+
 h2 {
     font-family: Lulro;
     text-align: center;
