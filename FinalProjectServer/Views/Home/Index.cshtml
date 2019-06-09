@@ -58,6 +58,28 @@
             });
         });
 
+        $('#freeText').keyup(function() {
+            var text = $('#freeText').val();
+            var line = text.split('\n')[0];
+            var openingBracket = false;
+            var data = line.split(/[()]/).filter(i => i);
+
+            if (data.length !== 2) {
+                // fail
+            } else {
+                var inputs = data[0].split(/[ ,]/).filter(i => i);
+                var outputs = data[1].split(/[ ,]/).filter(i => i);
+
+                for (int i = 0; i < inputs.length; i++) {
+                    $('').append('');
+                }
+
+                for (int i = 0; i < outputs.length; i++) {
+                    $('').append('');
+                }
+            }
+        });
+
         function redirect(result) {
             $('#inset_form').html('<form action="Home/Result" name="send" method="post" style="display:none;"><textarea name="result">' + result +'</textarea></form>');
 
@@ -93,18 +115,24 @@
         <div class="item active">
             <img src="~/images/ChooseFile44.svg" alt="ASP.NET" class="img-responsive" />
             <div class="carousel-caption" role="option">
-                <p>
-                    <input id="fileInput" class="form-control" type="file" accept=".txt, .json">
-                    <button id="submitFileButton" type="button" class="btn btn-primary ">
-                        Run
-                    </button>
-                </p>
+                <input id="fileInput" class="form-control" type="file" accept=".txt, .json">
+                <div id="fileVariables" style="display: inline; float: left;">
+                    <label>Function Name: </label>
+                    <input type="text" class="form-control" style="width: 175px;"/>
+                </div>
+                <button id="submitFileButton" type="button" class="btn btn-primary ">
+                    Run
+                </button>
             </div>
         </div>
         <div class="item">
             <img src="~/images/EnterData.svg" alt="Visual Studio" class="img-responsive" />
             <div class="carousel-caption" role="option">
-                <textarea cols="5" id="freeInput" class="form-control"></textarea>
+                <textarea id="freeText" cols="5" id="freeInput" class="form-control"></textarea>
+                <div id="textVariables" style="display: inline; float: left;">
+                    <label>Function Name: </label>
+                    <input type="text" class="form-control" style="width: 175px;" />
+                </div>
                 <button type="button" class="btn btn-default btn-sm" id="submitTextButton">
                     Run
                 </button>
