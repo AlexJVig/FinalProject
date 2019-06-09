@@ -13,22 +13,23 @@ using System.Linq;
 using GeneticSharp.Domain.Terminations;
 using System.Threading.Tasks;
 using System.Diagnostics;
-using GeneticSharp.Domain.Randomizations;
+using Newtonsoft.Json;
 
 namespace FinalProjectServer.Models.GA
 {
     public class GaService
     {
-        public static string StartGa(IoData data)
+        public static string StartGa(FreeTextData data)
         {
-            var inputsList = new List<InputFunction>[data.Data[0].Output.Count];
+            var parsedObject = new IoData(data.Points);
+            var inputsList = new List<InputFunction>[parsedObject.Data[0].Output.Count];
 
             for (int i = 0; i < inputsList.Length; i++)
             {
                 inputsList[i] = new List<InputFunction>();
             }
 
-            foreach (var entry in data.Data)
+            foreach (var entry in parsedObject.Data)
             {
                 for (int i = 0; i < inputsList.Length; i++)
                 {
@@ -53,7 +54,7 @@ namespace FinalProjectServer.Models.GA
                 return ex.ToString();
             }
 
-            string result = GenerateCSharpFunction(tasks.Select(x=>x.Result).ToArray(), data.Data[0].Input.Count);
+            string result = GenerateCSharpFunction(tasks.Select(x=>x.Result).ToArray(), parsedObject.Data[0].Input.Count, data.FunctionName, data.VariableNames);
             return result;
         }
 
@@ -72,7 +73,7 @@ namespace FinalProjectServer.Models.GA
             IMutation mutation = new ExpressionMutation(funcLength);
 
             GeneticAlgorithm ga = new GeneticAlgorithm(population, fitness, selection, crossover, mutation);
-            ga.Termination = new ExpressionTermination(200);
+            ga.Termination = new ExpressionTermination(10);
             ga.MutationProbability = .5f;
 
             ga.Start();
@@ -80,16 +81,18 @@ namespace FinalProjectServer.Models.GA
            return ga.BestChromosome as ExpressionChromosome;
         }
 
-        private static string GenerateCSharpFunction(ExpressionChromosome[] results, int variableCount)
+        private static string GenerateCSharpFunction(ExpressionChromosome[] results, int variableCount, string functionName, string variables)
         {
             string[] mathReps = results.Select(x => PrefixToInfix(x.GetExpressionGenes())).ToArray();
             string[] variablesArray = Enumerable.Range(0, variableCount).Select(i => $"double X{i}").ToArray();
-            string variablesString = string.Join(", ", variablesArray);
+            //var variableEnumerable = variables.Split(',').ToList().Select(s => $"double {s}");
+            string variableString = string.Join(", ", variablesArray);
+            string[] variableArray = variables.Split(',');
 
             if (results.Length == 1)
             {
                 return $@"{'\n'}
-private dobule resultFunction({variablesString})
+private dobule resultFunction({variableString})
 {{
     return {mathReps[0]};
 }}";
@@ -98,14 +101,18 @@ private dobule resultFunction({variablesString})
             {
                 string[] tempVars = mathReps.Select((x, i) => $"double result{i} = {x};").ToArray();
                 string[] varNames = Enumerable.Range(0, results.Length).Select(x => $"result{x}").ToArray();
-
-                return $@"{'\n'}
-private dobule[] resultFunction({variablesString})
+                StringBuilder result = new StringBuilder($@"{'\n'}
+private dobule[] {functionName}({variableString})
 {{
     {string.Join("\n    ", tempVars)}
     double[] result = new double[] {{ {string.Join(", ", varNames)} }};
     return result;
-}}";
+}}");
+
+                for (int i = 0; i < variableArray.Length; i++)
+                    result.Replace($"X{i}", variableArray[i]);
+
+                return result.ToString();
             }
         }
 
@@ -116,42 +123,6 @@ private dobule[] resultFunction({variablesString})
             
             //str = str.Replace("@", "@" + System.Environment.NewLine);
             return "";
-        }
-
-        public static string GenerateSampleData(string equation)
-        {
-            string prefix = PrefixHelper.InfixToPrefix(equation);
-
-            List<Models.GA.InputFunction> data = new List<Models.GA.InputFunction>();
-
-            int sampleDataSize = 20;
-            int variableNumber = equation.Where(x => char.IsLetter(x)).Distinct().Count();
-
-            StringBuilder result = new StringBuilder();
-
-            for (int i = 0; i < sampleDataSize; i++)
-            {
-                result.Append("(");
-                double[] values = new double[variableNumber];
-                for (int j = 0; j < variableNumber; j++)
-                {
-                    values[j] = RandomizationProvider.Current.GetDouble(-10, 10);
-                    result.Append(values[j]);
-                    if (j < variableNumber - 1)
-                        result.Append(',');
-                }
-                result.Append(")(");
-
-                double result1 = PrefixHelper.EvaluatePrefix(prefix, values);
-
-                result.AppendLine($"{result1})");
-
-                InputFunction input = new InputFunction(result1, values);
-
-                data.Add(input);
-            }
-
-            return result.ToString();
         }
 
         private static string PrefixToInfix(ExpressionGene[] pre_exp)

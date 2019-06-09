@@ -11,9 +11,7 @@ namespace FinalProjectServer.Controllers
         [HttpPost]
         public IActionResult StartMutating([FromBody]FreeTextData data)
         {
-            var ioData = JsonConvert.DeserializeObject<IoData>(data.Points);
-
-            var result = GaService.StartGa(ioData);
+            var result = GaService.StartGa(data);
 
             return Json(result);
         }
@@ -21,20 +19,10 @@ namespace FinalProjectServer.Controllers
         [HttpPost]
         public IActionResult StartMutatingFreeText([FromBody]FreeTextData data)
         {
-            var parsedData = new IoData(data.Points);
-
-            var result = GaService.StartGa(parsedData);
+            var result = GaService.StartGa(data);
 
             return Json(result);
         }
-
-        [HttpPost]
-        public IActionResult GenerateInputData([FromBody]EquationInput data)
-        {
-            string result = GaService.GenerateSampleData(data.Equation);
-            return Json(result);
-        }
-
 
         public IActionResult Index()
         {
@@ -56,11 +44,6 @@ namespace FinalProjectServer.Controllers
         }
 
         public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        public IActionResult GenerateInput()
         {
             return View();
         }
