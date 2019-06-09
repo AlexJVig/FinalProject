@@ -46,6 +46,25 @@ footer {
     margin-top: 2px;
 }
 
+@-webkit-keyframes progress-bar-stripes {
+    from {
+        background-position: 40px 0;
+    }
+
+    to {
+        background-position: 0 0;
+    }
+}
+
+
+.progress-bar-animated {
+    animation: progress-bar-stripes 2s linear infinite;
+}
+
+.progress {
+    margin-top: 50px;
+}
+
 h2 {
     font-family: Lulro;
     text-align: center;
