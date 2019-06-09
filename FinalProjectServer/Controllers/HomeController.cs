@@ -52,8 +52,10 @@ namespace FinalProjectServer.Controllers
             return View();
         }
 
-        public IActionResult Result()
+        [HttpPost]
+        public IActionResult Result([FromForm]string result)
         {
+            ViewData["result"] = result;
             return View();
         }
 
