@@ -23,9 +23,30 @@ h1 {
     font-family: 'Calling';
     font-size: 80px;
     text-align: center;
- }
+    color: white;
+    /*text-shadow: 0 1px 0 #ccc, 0 2px 0 #c9c9c9, 0 3px 0 #bbb, 0 4px 0 #b9b9b9, 0 5px 0 #aaa, 0 6px 1px rgba(0,0,0,.1), 0 0 5px rgba(0,0,0,.1), 0 1px 3px rgba(0,0,0,.3), 0 3px 5px rgba(0,0,0,.2), 0 5px 10px rgba(0,0,0,.25), 0 10px 10px rgba(0,0,0,.2), 0 20px 20px rgba(0,0,0,.15);*/
+    text-shadow: 1px 1px 0 #CCC, 2px 2px 0 #CCC, 3px 3px 0 #444, 4px 4px 0 #444, 5px 5px 0 #444, 6px 6px 0 #444;
+}
 
-h2{
+footer {
+    color: white;
+    margin-top: 50px;
+    display: none;
+}
+
+#myCarousel {
+    margin-top: 30px;
+}
+
+.carousel-inner, .carousel-control {
+    border-radius: 20px;
+}
+
+#submitFileButton {
+    margin-top: 2px;
+}
+
+h2 {
     font-family: Lulro;
     text-align: center;
 }
@@ -47,7 +68,8 @@ h3 {
 body {
     padding-top: 50px;
     padding-bottom: 20px;
-    background-color: palegoldenrod;
+    background-color: #1d1f21;
+    color:white;
 }
 
 /* Wrapping element */
