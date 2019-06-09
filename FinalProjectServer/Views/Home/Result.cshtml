@@ -9,15 +9,19 @@
         $(document).ready(function () {
             var pageUrl = window.location.search.split('=');
 
-            console.log(decodeURIComponent(pageUrl[1]));
-            $('#resultSection').text(decodeURIComponent(pageUrl[1]));
+            var x = decodeURIComponent(pageUrl[1]);
+            $('#resultSection').html(x);
+            hljs.initHighlightingOnLoad();
         });
     </script>
+    <style>
+        code {
+
+        }
+    </style>
 </head>
 <body>
-    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.0/prism.min.js"></script>-->
     <script src="~/js/highlight.pack.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
 </body>
 <div>
     <h1>Thank You!</h1>
@@ -25,22 +29,7 @@
 </div>
 
 <div>
-    <pre style="background-color: #1d1f21 !important"><code id="resultSection" class="C#">function(x,y){ 
-var i = x+y;
-return x+y;   
-}
-</code></pre>
+    <pre style="background-color: #1d1f21 !important">
+        <code id="resultSection" class="C#"></code>
+    </pre>
 </div>
-
-
-<!--<div class="box">
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-    <div class="content">
-
-        <p></p>
-    </div>
-
-</div>-->
