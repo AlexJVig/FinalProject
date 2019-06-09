@@ -3,15 +3,24 @@
 }
 
 <script>
-    $(document).ready(function () {
+    var selectedFile;
 
+    function handleFileSelect(evt) {
+        var file = evt.target.files[0]; // FileList object
+        var fileReader = new FileReader();
+
+        fileReader.readAsText(file);
+        fileReader.onload = function () {
+            selectedFile = fileReader;
+        }
+    }
+
+    $(document).ready(function () {
         $('.loading').hide();
 
         //get button by ID
         $('#submitTextButton').on('click', function (event) {
             $('.loading').show();
-            //event.preventDefault();
-            //call a function with parameters
             $.ajax({
                 headers: {
                     'Accept': 'application/json',
@@ -27,41 +36,32 @@
                 success: function(data, textStatus, jqXHR) {
                     generatedFunction = data;
                     window.location.replace(window.location.href + "Home/Result?func=" + data);
-            }
+                }
+            });
         });
 
-            $('#submitFileButton').on('click', function () {
-                $('.loading').show();
+        $('#submitFileButton').on('click', function (event) {
+            $('.loading').show();
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                url: 'Home/StartMutating',
+                type: 'POST',
+                datatype: 'json',
+                data: JSON.stringify({
+                    'VariableNames': '',
+                    'Points': selectedFile.result
+                }),
+                success: function(data, textStatus, jqXHR) {
+                    generatedFunction = data;
+                    window.location.replace(window.location.href + "Home/Result?func=" + data);
+                }
             });
         });
 
         document.getElementById('fileInput').addEventListener('change', handleFileSelect, false);
-
-        function handleFileSelect(evt) {
-            var file = evt.target.files[0]; // FileList object
-            var fileReader = new FileReader();
-
-            fileReader.readAsText(file);
-            fileReader.onload = function () {
-                $.ajax({
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    url: 'Home/StartMutating',
-                    type: 'POST',
-                    datatype: 'json',
-                    data: JSON.stringify({
-                        'VariableNames': '',
-                        'Points': fileReader.result
-                    }),
-                    success: function(data, textStatus, jqXHR) {
-                        generatedFunction = data;
-                        window.location.replace(window.location.href + "Home/Result?func=" + data);
-                    }
-                });
-            }
-        }
     });
 </script>
 <div margin: auto;>
@@ -79,9 +79,9 @@
             <div class="carousel-caption" role="option">
                 <p>
                     <input id="fileInput" class="form-control" type="file" accept=".txt, .json">
-                    <a id="submitFileButton" class="btn btn-default" href="">
+                    <button id="submitFileButton" type="button" class="btn btn-default btn-sm">
                         Run
-                    </a>
+                    </button>
                 </p>
             </div>
         </div>
