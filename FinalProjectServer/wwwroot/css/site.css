@@ -92,9 +92,18 @@ nav {
     padding-bottom: 20px;
 }
 
+.eqContainer input[type=text] {
+    display:inline;
+    width: 400px;
+}
+
 #resultSection {
     color: white;
     background: #1d1f21;
+}
+
+.carousel-caption {
+    top: 150px;
 }
 
 h2 {
