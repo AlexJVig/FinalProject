@@ -5,6 +5,7 @@
 <script>
     var selectedFile;
     var variableCount = 0;
+    var variableCountFile = 0;
 
     var getVariableNames = function () {
         var variables = '';
@@ -17,6 +18,17 @@
         return variables;
     }
 
+    var getVariablesFile = function () {
+        var variables = '';
+
+        variables += $('#Y0').val();
+
+        for (var i = 1; i < variableCount; i++)
+            variables += ',' + $('#Y' + i).val();
+
+        return variables;
+    }
+
     function handleFileSelect(evt) {
         var file = evt.target.files[0]; // FileList object
         var fileReader = new FileReader();
@@ -24,6 +36,25 @@
         fileReader.readAsText(file);
         fileReader.onload = function () {
             selectedFile = fileReader;
+
+            var line = selectedFile.result.split('\n')[0];
+            var data = line.split(/[()]/).filter(i => i);
+
+            $('#fileVariables').empty(); // Clear previous items.
+            variableCountFile = 0;
+
+            if (data.length !== 2) {
+                // fail
+            } else {
+                var inputs = data[0].split(/[ ,]/).filter(i => i);
+
+                for (var i = 0; i < inputs.length; i++) {
+                    var currentVar = 'Y' + i;
+
+                    $('#fileVariables').append('<div class="form-group"><label for="' + currentVar + '" class="col-sm-offset-1 col-sm-3 control-label">#'+(i+1)+' Variable: </label><div class="col-sm-6"><input id="' + currentVar + '" type="text" class="form-control" placeholder="' + currentVar + '" /></div></div>');
+                    variableCount++;
+                }
+            }
         }
     }
 
@@ -64,7 +95,7 @@
                 datatype: 'json',
                 data: JSON.stringify({
                     'FunctionName': $('#funcNameFile').val(),
-                    'VariableNames': getVariableNames(),
+                    'VariableNames': getVariablesFile(),
                     'Points': selectedFile.result
                 }),
                 success: function(data, textStatus, jqXHR) {
@@ -76,18 +107,15 @@
         $('#freeText').keyup(function() {
             var text = $('#freeText').val();
             var line = text.split('\n')[0];
-            var openingBracket = false;
             var data = line.split(/[()]/).filter(i => i);
 
             $('#textVariables').empty(); // Clear previous items.
+            variableCount = 0;
 
             if (data.length !== 2) {
                 // fail
             } else {
                 var inputs = data[0].split(/[ ,]/).filter(i => i);
-                var outputs = data[1].split(/[ ,]/).filter(i => i);
-
-                variableCount = 0;
 
                 for (var i = 0; i < inputs.length; i++) {
                     var currentVar = 'X' + i;
