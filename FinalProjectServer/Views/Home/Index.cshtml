@@ -5,15 +5,17 @@
 <script>
     var selectedFile;
     var variableCount = 0;
-    var variableCountFile = 0;
 
     var getVariableNames = function () {
         var variables = '';
 
-        variables += $('#X0').val();
+        variables += $('#X0').val() ? $('#X0').val() : 'X0';
 
-        for (var i = 1; i < variableCount; i++)
-            variables += ',' + $('#X' + i).val();
+        for (var i = 1; i < variableCount; i++) {
+            var valueToAdd = $('#X' + i).val() ? $('#X' + i).val() : 'X' + i;
+
+            variables += ',' + valueToAdd;
+        }
 
         return variables;
     }
@@ -21,10 +23,13 @@
     var getVariablesFile = function () {
         var variables = '';
 
-        variables += $('#Y0').val();
+        variables += $('#Y0').val() ? $('#Y0').val() : 'Y0';
 
-        for (var i = 1; i < variableCount; i++)
-            variables += ',' + $('#Y' + i).val();
+        for (var i = 1; i < variableCount; i++) {
+            var valueToAdd = $('#Y' + i).val() ? $('#Y' + i).val() : 'Y' + i;
+
+            variables += ',' + valueToAdd;
+        }
 
         return variables;
     }
@@ -41,7 +46,7 @@
             var data = line.split(/[()]/).filter(i => i);
 
             $('#fileVariables').empty(); // Clear previous items.
-            variableCountFile = 0;
+            variableCount = 0;
 
             if (data.length !== 2) {
                 // fail
@@ -73,7 +78,7 @@
                 type: 'POST',
                 datatype: 'json',
                 data: JSON.stringify({
-                    'FunctionName': $('#funcNameText').val(),
+                    'FunctionName': $('#funcNameText').val() ? $('#funcNameText').val() : 'myFunc',
                     'VariableNames': getVariableNames(),
                     'Points': $('#freeText').val()
                 }),
@@ -94,7 +99,7 @@
                 type: 'POST',
                 datatype: 'json',
                 data: JSON.stringify({
-                    'FunctionName': $('#funcNameFile').val(),
+                    'FunctionName': $('#funcNameFile').val() ? $('#funcNameFile').val() : 'myFunc',
                     'VariableNames': getVariablesFile(),
                     'Points': selectedFile.result
                 }),
@@ -173,8 +178,8 @@
                             <input id="funcNameFile" type="text" class="form-control" placeholder="myFunc"/>
                         </div>
                     </div>
+                    <div id="fileVariables"></div>
                 </form>
-                <div id="fileVariables" style="display: inline; float: left;"></div>
                 <button id="submitFileButton" type="button" class="btn btn-default ">
                     Run
                 </button>
@@ -196,12 +201,6 @@
                         </div>
                     </div>
                     <div id="textVariables"></div>
-                    @*<div class="form-group">
-                        <label for="' + currentVar + '" class="col-sm-offset-1 col-sm-3 control-label">Variable Name: </label>
-                        <div class="col-sm-6">
-                            <input id="' + currentVar + '" type="text" class="form-control" placeholder="' + currentVar + '" />
-                        </div>
-                    </div>*@
                 </form>
                 <button type="button" class="btn btn-default btn-sm" id="submitTextButton">
                     Run
