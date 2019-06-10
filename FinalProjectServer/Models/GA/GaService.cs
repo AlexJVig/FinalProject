@@ -13,6 +13,7 @@ using System.Linq;
 using GeneticSharp.Domain.Terminations;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using GeneticSharp.Domain.Randomizations;
 using Newtonsoft.Json;
 
 namespace FinalProjectServer.Models.GA

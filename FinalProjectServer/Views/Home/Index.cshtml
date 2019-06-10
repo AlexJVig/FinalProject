@@ -92,7 +92,7 @@
                 for (var i = 0; i < inputs.length; i++) {
                     var currentVar = 'X' + i;
 
-                    $('#textVariables').append('<label>Variable Name: </label><input id="' + currentVar + '" type="text" class="form-control" style="width: 175px;" />');
+                    $('#textVariables').append('<div class="form-group"><label for="' + currentVar + '" class="col-sm-offset-1 col-sm-3 control-label">#'+(i+1)+' Variable: </label><div class="col-sm-6"><input id="' + currentVar + '" type="text" class="form-control" placeholder="' + currentVar + '" /></div></div>');
                     variableCount++;
                 }
             }
@@ -128,30 +128,53 @@
         <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
         <li data-target="#myCarousel" data-slide-to="1"></li>
     </ol>
-    <div class="carousel-inner" role="listbox" style="">
-        <div class="item active">
-            <img src="~/images/ChooseFile44.svg" alt="ASP.NET" class="img-responsive" style="height: 500px;" />
-            <div class="carousel-caption" role="option">
-                <input id="fileInput" class="form-control" type="file" accept=".txt, .json">
-                <div>
-                    <label>Function Name: </label>
-                    <input id="funcNameFile" type="text" class="form-control" style="width: 175px;"/>
-                </div>
+    <div class="carousel-inner" role="listbox">
+        <div class="item active" style="height: 575px; background: #5DB5DA;">
+            <img src="~/images/ChooseFile44.svg" alt="ASP.NET" class="img-responsive"  />
+            <div class="carousel-caption">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="fileInput" class="col-sm-offset-1 col-sm-3 control-label">Input File: </label>
+                        <div class="col-sm-6">
+                            <input id="fileInput" class="form-control" type="file" accept=".txt, .json">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="funcNameFile" class="col-sm-offset-1 col-sm-3 control-label">Function Name: </label>
+                        <div class="col-sm-6">
+                            <input id="funcNameFile" type="text" class="form-control" placeholder="myFunc"/>
+                        </div>
+                    </div>
+                </form>
                 <div id="fileVariables" style="display: inline; float: left;"></div>
-                <button id="submitFileButton" type="button" class="btn btn-primary ">
+                <button id="submitFileButton" type="button" class="btn btn-default ">
                     Run
                 </button>
             </div>
         </div>
-        <div class="item">
-            <img src="~/images/EnterData.svg" alt="Visual Studio" class="img-responsive"  style="height: 500px;" />
+        <div class="item" style="height: 575px; background: #671D7B;">
+            <img src="~/images/EnterData.svg" alt="Visual Studio" class="img-responsive"   />
             <div class="carousel-caption" role="option">
-                <textarea id="freeText" cols="5" class="form-control"></textarea>
-                <div>
-                    <label>Function Name: </label>
-                    <input id="funcNameText" type="text" class="form-control" style="width: 175px;" />
-                </div>
-                <div id="textVariables" style="display: inline; float: left;"></div>
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <textarea id="freeText" rows="4" class="form-control" style="resize:none;"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="funcNameText" class="col-sm-offset-1 col-sm-3 control-label">Function Name: </label>
+                        <div class="col-sm-6">
+                            <input id="funcNameText" type="text" class="form-control" placeholder="myFunc" />
+                        </div>
+                    </div>
+                    <div id="textVariables"></div>
+                    @*<div class="form-group">
+                        <label for="' + currentVar + '" class="col-sm-offset-1 col-sm-3 control-label">Variable Name: </label>
+                        <div class="col-sm-6">
+                            <input id="' + currentVar + '" type="text" class="form-control" placeholder="' + currentVar + '" />
+                        </div>
+                    </div>*@
+                </form>
                 <button type="button" class="btn btn-default btn-sm" id="submitTextButton">
                     Run
                 </button>
