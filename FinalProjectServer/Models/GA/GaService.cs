@@ -92,11 +92,16 @@ namespace FinalProjectServer.Models.GA
 
             if (results.Length == 1)
             {
-                return $@"{'\n'}
-private dobule resultFunction({variableString})
+                StringBuilder result = new StringBuilder($@"{'\n'}
+private dobule {functionName}({variableString})
 {{
     return {mathReps[0]};
-}}";
+}}");
+
+                for (int i = 0; i < variableArray.Length; i++)
+                    result.Replace($"X{i}", variableArray[i]);
+
+                return result.ToString();
             }
             else
             {
